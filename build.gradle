@@ -30,14 +30,19 @@ ext {
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
 
     // Define all dependencies in the base project, to unify & make it easy to update
+    appCompat = 'com.android.support:appcompat-v7:25.0.0'
+
     rxJava = 'io.reactivex:rxjava:1.2.1'
     rxBinding = 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    appCompat = 'com.android.support:appcompat-v7:25.0.0'
     rxlifecycle = 'com.trello:rxlifecycle:1.0'
     rxlifecycleAndroid = 'com.trello:rxlifecycle-android:1.0'
     rxlifecycleComponent = 'com.trello:rxlifecycle-components:1.0'
+
+    //network
     okHttp        = 'com.squareup.okhttp3:okhttp:3.6.0'
     logInterceptor = 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     stetho        = 'com.facebook.stetho:stetho:1.4.2'
     stethookhttp3 = 'com.facebook.stetho:stetho-okhttp3:1.4.2'
+
+    //cache
 }
