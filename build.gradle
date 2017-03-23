@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.3.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -32,11 +32,11 @@ ext {
     // Define all dependencies in the base project, to unify & make it easy to update
     appCompat = 'com.android.support:appcompat-v7:25.0.0'
 
-    rxJava = 'io.reactivex:rxjava:1.2.1'
-    rxBinding = 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    rxlifecycle = 'com.trello:rxlifecycle:1.0'
-    rxlifecycleAndroid = 'com.trello:rxlifecycle-android:1.0'
-    rxlifecycleComponent = 'com.trello:rxlifecycle-components:1.0'
+    rxJava = 'io.reactivex.rxjava2:rxjava:2.0.1'
+    rxBinding = 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    rxlifecycle = 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+    rxlifecycleAndroid = 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
+    rxlifecycleComponent = 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
 
     //network
     okHttp        = 'com.squareup.okhttp3:okhttp:3.6.0'

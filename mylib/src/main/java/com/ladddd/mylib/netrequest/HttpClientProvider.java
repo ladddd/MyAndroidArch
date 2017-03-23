@@ -1,12 +1,12 @@
 package com.ladddd.mylib.netrequest;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.ladddd.mylib.config.AppConfig;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.security.KeyStore;
-import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -72,7 +72,7 @@ public class HttpClientProvider {
                     interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
                     //todolist-> 添加对缓存文件管理
-                    Cache cache = new Cache(new File("xxx", "HttpCache"),
+                    Cache cache = new Cache(new File(AppConfig.getContext().getCacheDir(), "HttpCache"),
                             1024 * 1024 * 100);
 
                     KeyStore keyStore = getKeyStore(CER_12306);
@@ -80,21 +80,21 @@ public class HttpClientProvider {
 
                     mOkHttpClient = new OkHttpClient.Builder()
                             .cache(cache)
-                            .addInterceptor(new SampleRequestInterceptor()) //请求签名
-                            .addInterceptor(new SampleResponseInterceptor()) //校验服务器时间
+//                            .addInterceptor(new SampleRequestInterceptor()) //请求签名
+//                            .addInterceptor(new SampleResponseInterceptor()) //校验服务器时间
                             .addInterceptor(interceptor)
                             .addNetworkInterceptor(new StethoInterceptor())
                             .retryOnConnectionFailure(true)
                             .connectTimeout(30, TimeUnit.SECONDS)
                             .writeTimeout(30, TimeUnit.SECONDS)
                             .readTimeout(30, TimeUnit.SECONDS)
-                            .sslSocketFactory(getSSLSocketFactory(trustManagers), transformTrustManager(trustManagers))
-                            .hostnameVerifier(new HostnameVerifier() {
-                                @Override
-                                public boolean verify(String hostname, SSLSession session) {
-                                    return hostname.equals("test.com");
-                                }
-                            })
+//                            .sslSocketFactory(getSSLSocketFactory(trustManagers), transformTrustManager(trustManagers))
+//                            .hostnameVerifier(new HostnameVerifier() {
+//                                @Override
+//                                public boolean verify(String hostname, SSLSession session) {
+//                                    return hostname.equals("test.com");
+//                                }
+//                            })
                             .build();
                 }
             }
