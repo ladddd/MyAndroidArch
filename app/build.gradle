@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
     defaultConfig {
         applicationId "com.ladddd.myandroidarch"
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -17,12 +17,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+        targetCompatibility rootProject.ext.targetCompatibilityVersion
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
     compile project(':mylib')
+
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

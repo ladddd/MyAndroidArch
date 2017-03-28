@@ -1,5 +1,7 @@
 package com.ladddd.mylib.netrequest;
 
+import android.util.Log;
+
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.ladddd.mylib.config.AppConfig;
 
@@ -66,6 +68,7 @@ public class HttpClientProvider {
                         @Override
                         public void log(String message) {
                             // 打印日志
+                            Log.d("okhhtp", message);
                         }
                     });
 

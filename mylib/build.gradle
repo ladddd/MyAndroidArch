@@ -9,9 +9,6 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -19,19 +16,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+        targetCompatibility rootProject.ext.targetCompatibilityVersion
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile rootProject.ext.rxJava
-    compile rootProject.ext.rxBinding
-    compile rootProject.ext.appCompat
-    compile rootProject.ext.rxlifecycle
-    compile rootProject.ext.rxlifecycleAndroid
-    compile rootProject.ext.rxlifecycleComponent
-    compile rootProject.ext.okHttp
-    compile rootProject.ext.logInterceptor
-    compile rootProject.ext.stetho
-    compile rootProject.ext.stethookhttp3
+    compile 'com.android.support:appcompat-v7:25.1.0'
+
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'me.tatarka:gradle-retrolambda:3.2.5'
+
+    //rx
+    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
+
+    //network
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile 'com.facebook.stetho:stetho:1.4.2'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
 }
