@@ -5,10 +5,10 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.ladddd.myandroidarch.api.GankApi;
-import com.ladddd.myandroidarch.vo.GankMeiziInfo;
-import com.ladddd.myandroidarch.vo.GankMeiziResult;
+import com.ladddd.myandroidarch.entity.GankMeiziInfo;
+import com.ladddd.myandroidarch.entity.GankMeiziResult;
 import com.ladddd.mylib.BaseActivity;
-import com.ladddd.mylib.netrequest.RetrofitManager;
+import com.ladddd.mylib.rx.RetrofitManager;
 
 import java.util.List;
 
@@ -20,6 +20,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 
 public class MainActivity extends BaseActivity {
@@ -32,7 +33,13 @@ public class MainActivity extends BaseActivity {
                 .getGankMeizi(20, 1)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GankMeiziResult>bindToLifecycle())
+                .compose(this.<Response<GankMeiziResult>>bindToLifecycle())
+                .map(new Function<Response<GankMeiziResult>, GankMeiziResult>() {
+                    @Override
+                    public GankMeiziResult apply(Response<GankMeiziResult> gankMeiziResultResponse) throws Exception {
+                        return gankMeiziResultResponse.body();
+                    }
+                })
                 .filter(new Predicate<GankMeiziResult>() {
                     @Override
                     public boolean test(GankMeiziResult gankMeiziResult) throws Exception {
