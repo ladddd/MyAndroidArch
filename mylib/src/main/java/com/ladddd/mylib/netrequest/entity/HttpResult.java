@@ -1,4 +1,4 @@
-package com.ladddd.mylib.entity;
+package com.ladddd.mylib.netrequest.entity;
 
 /**
  * Created by 陈伟达 on 2017/3/28.

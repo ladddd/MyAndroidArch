@@ -8,6 +8,8 @@ import com.ladddd.myandroidarch.api.GankApi;
 import com.ladddd.myandroidarch.entity.GankMeiziInfo;
 import com.ladddd.myandroidarch.entity.GankMeiziResult;
 import com.ladddd.mylib.BaseActivity;
+import com.ladddd.mylib.event.BaseEvent;
+import com.ladddd.mylib.netrequest.consumer.ExceptionConsumer;
 import com.ladddd.mylib.rx.RetrofitManager;
 
 import java.util.List;
@@ -57,12 +59,12 @@ public class MainActivity extends BaseActivity {
                     public void accept(List<GankMeiziInfo> gankMeiziInfos) throws Exception {
                         Log.d("gank", gankMeiziInfos.toString());
                     }
-                }, new Consumer<Throwable>() {
+                }, new ExceptionConsumer<>(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Log.d("gank", "error");
+                        //ui show no data
                     }
-                });
+                }));
     }
 
     @Override

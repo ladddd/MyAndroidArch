@@ -1,6 +1,6 @@
 package com.ladddd.mylib.rx;
 
-import com.ladddd.mylib.entity.HttpResult;
+import com.ladddd.mylib.netrequest.entity.HttpResult;
 import com.ladddd.mylib.netrequest.exception.BusinessException;
 import com.ladddd.mylib.netrequest.exception.ServerException;
 
