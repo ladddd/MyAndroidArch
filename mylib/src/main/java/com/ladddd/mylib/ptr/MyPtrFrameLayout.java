@@ -13,6 +13,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 
 public class MyPtrFrameLayout extends PtrFrameLayout {
 
+    private static final int mLoadingMinTime = 500;
+
     private PtrHelper helper;
 
     public void setHelper(PtrHelper ptrHelper) {
@@ -20,19 +22,22 @@ public class MyPtrFrameLayout extends PtrFrameLayout {
     }
 
     public MyPtrFrameLayout(Context context) {
-        this(context, null, 0);
+        super(context);
+        init(context);
     }
 
     public MyPtrFrameLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init(context);
     }
 
     public MyPtrFrameLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
+        setLoadingMinTime(mLoadingMinTime);
         disableWhenHorizontalMove(true);
         setPtrHandler(new PtrDefaultHandler() {
             @Override
@@ -47,5 +52,9 @@ public class MyPtrFrameLayout extends PtrFrameLayout {
                 return super.checkCanDoRefresh(frame, content, header);
             }
         });
+
+        DefaultPtrHeader header = new DefaultPtrHeader(context, mLoadingMinTime);
+        setHeaderView(header);
+        addPtrUIHandler(header);
     }
 }

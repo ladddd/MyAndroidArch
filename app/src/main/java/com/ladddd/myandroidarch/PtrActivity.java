@@ -13,7 +13,6 @@ import com.ladddd.myandroidarch.api.GankApi;
 import com.ladddd.myandroidarch.entity.GankMeiziInfo;
 import com.ladddd.myandroidarch.entity.GankMeiziResult;
 import com.ladddd.myandroidarch.entity.ImageModule;
-import com.ladddd.myandroidarch.ptr.LiaohuqiuPtrHeader;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.netrequest.consumer.ExceptionConsumer;
 import com.ladddd.mylib.ptr.MyPtrFrameLayout;
@@ -48,8 +47,6 @@ public class PtrActivity extends BaseActivity {
     @BindView(R.id.ptr)
     MyPtrFrameLayout ptr;
 
-    LiaohuqiuPtrHeader header;
-
     public static void open(@NonNull Context context) {
         Intent intent = new Intent(context, PtrActivity.class);
         context.startActivity(intent);
@@ -66,9 +63,6 @@ public class PtrActivity extends BaseActivity {
         recyclerView.setItemAnimator(null); //avoid staggeredGridLayoutManager wired animation during view convert
         adapter = new GankMeiziAdapter();
         recyclerView.setAdapter(adapter);
-        header = new LiaohuqiuPtrHeader(this);
-        ptr.setHeaderView(header);
-        ptr.addPtrUIHandler(header);
 
         ptr.setHelper(new PtrHelper() {
             @Override
@@ -79,6 +73,7 @@ public class PtrActivity extends BaseActivity {
                             @Override
                             public void accept(List<ImageModule> imageModules) throws Exception {
                                 ptr.refreshComplete();
+                                //ugly fix contain same data
                                 if (imageModules != null && imageModules.size() > 0 &&
                                         !imageModules.get(0).getId().equals(adapter.getData().get(0).getId())) {
                                     adapter.setNewData(imageModules);
