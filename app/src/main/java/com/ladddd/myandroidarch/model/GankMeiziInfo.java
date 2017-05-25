@@ -1,4 +1,4 @@
-package com.ladddd.myandroidarch.entity;
+package com.ladddd.myandroidarch.model;
 
 public class GankMeiziInfo {
 

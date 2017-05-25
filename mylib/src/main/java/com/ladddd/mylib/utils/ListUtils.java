@@ -9,9 +9,6 @@ import java.util.List;
 public class ListUtils {
 
     public static boolean isListHasData(List list) {
-        if (list != null && list.size() > 0) {
-            return true;
-        }
-        return false;
+        return list != null && list.size() > 0;
     }
 }

@@ -1,37 +1,30 @@
-package com.ladddd.myandroidarch;
+package com.ladddd.myandroidarch.ui.activity;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.ladddd.myandroidarch.adapter.GankMeiziAdapter;
-import com.ladddd.myandroidarch.api.GankApi;
-import com.ladddd.myandroidarch.entity.GankMeiziInfo;
-import com.ladddd.myandroidarch.entity.GankMeiziResult;
-import com.ladddd.myandroidarch.entity.ImageModule;
+import com.ladddd.myandroidarch.viewmodel.PtrViewModel;
+import com.ladddd.myandroidarch.R;
+import com.ladddd.myandroidarch.model.ImageModule;
+import com.ladddd.myandroidarch.ui.adapter.GankMeiziAdapter;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.netrequest.consumer.ExceptionConsumer;
 import com.ladddd.mylib.ptr.MyPtrFrameLayout;
 import com.ladddd.mylib.ptr.PtrHelper;
-import com.ladddd.mylib.rx.RetrofitManager;
 import com.ladddd.mylib.utils.ListUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 /**
  * Created by 陈伟达 on 2017/4/5.
@@ -39,8 +32,8 @@ import retrofit2.Response;
 
 public class PtrActivity extends BaseActivity {
 
-    private int page = 1;
     private GankMeiziAdapter adapter;
+    private PtrViewModel mGankMeiziViewModel;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -67,36 +60,30 @@ public class PtrActivity extends BaseActivity {
         ptr.setHelper(new PtrHelper() {
             @Override
             public void handleRefreshBegin() {
-                page = 1;
-                getGankMeiziInfo()
+                mGankMeiziViewModel.getImageModules()
                         .subscribe(new Consumer<List<ImageModule>>() {
                             @Override
                             public void accept(List<ImageModule> imageModules) throws Exception {
                                 ptr.refreshComplete();
                                 //ugly fix contain same data
-                                if (imageModules != null && imageModules.size() > 0 &&
+                                Log.d("gankMeiziData", "----------real consumer----------");
+                                if (ListUtils.isListHasData(imageModules) &&
                                         !imageModules.get(0).getId().equals(adapter.getData().get(0).getId())) {
                                     adapter.setNewData(imageModules);
                                 }
                             }
-                        }, new ExceptionConsumer<>(new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                //ui show no data
-                                ptr.refreshComplete();
-                            }
-                        }));
+                        }, getErrConsumer());
             }
         });
 
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                page++;
-                getGankMeiziInfo()
+                mGankMeiziViewModel.getNextImageModules()
                         .subscribe(new Consumer<List<ImageModule>>() {
                             @Override
                             public void accept(List<ImageModule> imageModules) throws Exception {
+                                Log.d("gankMeiziData", "----------real consumer----------");
                                 if (ListUtils.isListHasData(imageModules)) {
                                     adapter.addData(imageModules);
                                     adapter.loadMoreComplete();
@@ -116,10 +103,15 @@ public class PtrActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        getGankMeiziInfo()
+        PtrViewModel.Factory factory = new PtrViewModel.Factory();
+        mGankMeiziViewModel = ViewModelProviders.of(this, factory).get(PtrViewModel.class);
+        mGankMeiziViewModel.init(this, 1, 20);
+
+        mGankMeiziViewModel.getImageModules()
                 .subscribe(new Consumer<List<ImageModule>>() {
                     @Override
                     public void accept(List<ImageModule> imageModules) throws Exception {
+                        Log.d("gankMeiziData", "----------real consumer----------");
                         adapter.setNewData(imageModules);
                     }
                 }, new ExceptionConsumer<>(new Consumer<Throwable>() {
@@ -130,42 +122,14 @@ public class PtrActivity extends BaseActivity {
                 }));
     }
 
-    private Observable<List<ImageModule>> getGankMeiziInfo() {
-        return RetrofitManager.getRetrofit(GankApi.BASE_URL)
-                .create(GankApi.class)
-                .getGankMeizi(20, page)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response<GankMeiziResult>>bindToLifecycle())
-                .map(new Function<Response<GankMeiziResult>, GankMeiziResult>() {
-                    @Override
-                    public GankMeiziResult apply(Response<GankMeiziResult> gankMeiziResultResponse) throws Exception {
-                        return gankMeiziResultResponse.body();
-                    }
-                })
-                .filter(new Predicate<GankMeiziResult>() {
-                    @Override
-                    public boolean test(GankMeiziResult gankMeiziResult) throws Exception {
-                        return !gankMeiziResult.error;
-                    }
-                })
-                .map(new Function<GankMeiziResult, List<ImageModule>>() {
-                    @Override
-                    public List<ImageModule> apply(GankMeiziResult gankMeiziResult) throws Exception {
-                        List<ImageModule> imageModuleList = new ArrayList<>();
-                        if (gankMeiziResult.gankMeizis != null) {
-                            //better server bring size of image
-                            for (GankMeiziInfo gankMeiziInfo : gankMeiziResult.gankMeizis) {
-                                ImageModule module = new ImageModule();
-                                module.setId(gankMeiziInfo._id);
-                                module.setUrl(gankMeiziInfo.url);
-                                module.setWidth(-1);
-                                module.setHeight(-1);
-                                imageModuleList.add(module);
-                            }
-                        }
-                        return imageModuleList;
-                    }
-                });
+    private ExceptionConsumer<Throwable> getErrConsumer() {
+        return new ExceptionConsumer<>(new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                //ui show no data
+
+                ptr.refreshComplete();
+            }
+        });
     }
 }

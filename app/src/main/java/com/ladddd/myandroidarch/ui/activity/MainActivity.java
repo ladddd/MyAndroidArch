@@ -1,8 +1,9 @@
-package com.ladddd.myandroidarch;
+package com.ladddd.myandroidarch.ui.activity;
 
 import android.content.Intent;
 import android.widget.Button;
 
+import com.ladddd.myandroidarch.R;
 import com.ladddd.mylib.BaseActivity;
 
 import butterknife.BindView;
@@ -18,6 +19,9 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.btn_ptr) void goToPtr() {
         PtrActivity.open(this);
     }
+
+    @OnClick(R.id.btn_h_ptr) void goToHPtr() {HorizonAndHeaderPtrActivity.open(this);}
+
     @OnClick(R.id.btn_share) void showSharePanel() {
 //        Intent sendIntent = new Intent();
 //        sendIntent.setAction(Intent.ACTION_SEND);

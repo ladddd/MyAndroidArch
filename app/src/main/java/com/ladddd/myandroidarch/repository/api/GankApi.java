@@ -1,6 +1,6 @@
-package com.ladddd.myandroidarch.api;
+package com.ladddd.myandroidarch.repository.api;
 
-import com.ladddd.myandroidarch.entity.GankMeiziResult;
+import com.ladddd.myandroidarch.model.GankMeiziResult;
 
 import io.reactivex.Observable;
 import retrofit2.Response;

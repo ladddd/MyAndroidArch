@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".PtrActivity"/>
+        <activity android:name=".ui.activity.PtrActivity"/>
+
+        <activity android:name=".ui.activity.HorizonAndHeaderPtrActivity"/>
     </application>
 
 </manifest>

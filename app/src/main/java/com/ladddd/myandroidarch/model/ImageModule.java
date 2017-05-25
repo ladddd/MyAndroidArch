@@ -1,4 +1,4 @@
-package com.ladddd.myandroidarch.entity;
+package com.ladddd.myandroidarch.model;
 
 /**
  * Created by 陈伟达 on 2017/5/16.

@@ -44,9 +44,9 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
                         if (aBoolean) {
-                            Log.d("RxNetWork", "network connected");
+                            onNetworkConnected();
                         } else {
-                            Log.d("RxNetword", "network not connected");
+                            onNetworkDisconnected();
                         }
                     }
                 });
@@ -57,6 +57,14 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected abstract void initView();
 
     protected abstract void initData();
+
+    protected void onNetworkConnected() {
+
+    }
+
+    protected void onNetworkDisconnected() {
+
+    }
 
     @Override
     protected void onRestart() {
