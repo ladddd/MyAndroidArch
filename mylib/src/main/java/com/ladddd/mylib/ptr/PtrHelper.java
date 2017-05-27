@@ -6,4 +6,6 @@ package com.ladddd.mylib.ptr;
 
 public interface PtrHelper {
     void handleRefreshBegin();
+
+    void handleRefreshEnd(int resultState);
 }

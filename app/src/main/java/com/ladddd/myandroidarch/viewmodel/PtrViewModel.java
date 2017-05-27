@@ -41,7 +41,6 @@ public class PtrViewModel extends ViewModel {
                 .doOnNext(new Consumer<List<ImageModule>>() {
                     @Override
                     public void accept(List<ImageModule> imageModules) throws Exception {
-                        Log.d("gankMeiziData", "----------doOnNext----------");
                         mImageModules = imageModules;
                     }
                 });
@@ -52,7 +51,6 @@ public class PtrViewModel extends ViewModel {
                 .doOnNext(new Consumer<List<ImageModule>>() {
                     @Override
                     public void accept(List<ImageModule> imageModules) throws Exception {
-                        Log.d("gankMeiziData", "----------doOnNext----------");
                         mImageModules = imageModules;
                     }
                 });

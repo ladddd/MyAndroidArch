@@ -25,6 +25,7 @@ public class DefaultPtrHeader extends FrameLayout implements PtrUIHandler {
 
     private Context mContext;
     private ImageView ivLoading;
+    private RefreshCompleteHandler mHandler;
 
     private int mLoadingMinTime;
     private ObjectAnimator rotateAnimator;
@@ -64,11 +65,15 @@ public class DefaultPtrHeader extends FrameLayout implements PtrUIHandler {
     @Override
     public void onUIRefreshComplete(PtrFrameLayout frame) {
         rotateAnimator.end();
+        //ui notice
+        if (mHandler != null) {
+            mHandler.onUIRefreshComplete();
+        }
     }
 
     @Override
     public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
-        final int mOffsetToRefresh = frame.getOffsetToRefresh();
+        final int offsetToRefresh = frame.getOffsetToRefresh();
         final int currentPos = ptrIndicator.getCurrentPosY();
         final int lastPos = ptrIndicator.getLastPosY();
 
@@ -88,5 +93,13 @@ public class DefaultPtrHeader extends FrameLayout implements PtrUIHandler {
             });
             animator.start();
         }
+    }
+
+    public void setRefreshCompleteHandler(RefreshCompleteHandler handler) {
+        mHandler = handler;
+    }
+
+    interface RefreshCompleteHandler {
+        void onUIRefreshComplete();
     }
 }

@@ -7,18 +7,19 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.ladddd.myandroidarch.viewmodel.PtrViewModel;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.model.ImageModule;
 import com.ladddd.myandroidarch.ui.adapter.GankMeiziAdapter;
+import com.ladddd.myandroidarch.viewmodel.PtrViewModel;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.netrequest.consumer.ExceptionConsumer;
+import com.ladddd.mylib.netrequest.consumer.PtrConsumers;
 import com.ladddd.mylib.ptr.MyPtrFrameLayout;
 import com.ladddd.mylib.ptr.PtrHelper;
 import com.ladddd.mylib.utils.ListUtils;
+import com.ladddd.myandroidarch.ui.view.ListInfoView;
 
 import java.util.List;
 
@@ -34,6 +35,10 @@ public class PtrActivity extends BaseActivity {
 
     private GankMeiziAdapter adapter;
     private PtrViewModel mGankMeiziViewModel;
+    private PtrConsumers<ImageModule> mLoadMoreConsumers;
+
+    private ListInfoView mEmptyView;
+    private ListInfoView mErrorView;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -58,21 +63,33 @@ public class PtrActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
 
         ptr.setHelper(new PtrHelper() {
-            @Override
             public void handleRefreshBegin() {
                 mGankMeiziViewModel.getImageModules()
                         .subscribe(new Consumer<List<ImageModule>>() {
                             @Override
                             public void accept(List<ImageModule> imageModules) throws Exception {
                                 ptr.refreshComplete();
-                                //ugly fix contain same data
-                                Log.d("gankMeiziData", "----------real consumer----------");
-                                if (ListUtils.isListHasData(imageModules) &&
-                                        !imageModules.get(0).getId().equals(adapter.getData().get(0).getId())) {
-                                    adapter.setNewData(imageModules);
+                                if (!ListUtils.isListHasData(imageModules)) {
+                                    //ui show no data when refresh end
+                                    ptr.setRefreshResultState(MyPtrFrameLayout.STATE_LIST_EMPTY);
+                                } else {
+                                    //ugly fix contain same data
+                                    if (!imageModules.get(0).getId().equals(adapter.getData().get(0).getId())) {
+                                        adapter.setNewData(imageModules);
+                                    }
+
                                 }
                             }
                         }, getErrConsumer());
+            }
+
+            @Override
+            public void handleRefreshEnd(int stateCode) {
+                if (MyPtrFrameLayout.STATE_LIST_EMPTY == stateCode) {
+                    ptr.showOverlay(mEmptyView);
+                } else if (MyPtrFrameLayout.STATE_NET_ERR == stateCode) {
+                    ptr.showOverlay(mErrorView);
+                }
             }
         });
 
@@ -80,23 +97,8 @@ public class PtrActivity extends BaseActivity {
             @Override
             public void onLoadMoreRequested() {
                 mGankMeiziViewModel.getNextImageModules()
-                        .subscribe(new Consumer<List<ImageModule>>() {
-                            @Override
-                            public void accept(List<ImageModule> imageModules) throws Exception {
-                                Log.d("gankMeiziData", "----------real consumer----------");
-                                if (ListUtils.isListHasData(imageModules)) {
-                                    adapter.addData(imageModules);
-                                    adapter.loadMoreComplete();
-                                } else {
-                                    adapter.loadMoreEnd();
-                                }
-                            }
-                        }, new ExceptionConsumer<>(new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                adapter.loadMoreFail();
-                            }
-                        }));
+                        .subscribe(mLoadMoreConsumers.getLoadMoreSuccessConsumer(),
+                                mLoadMoreConsumers.getLoadMoreExceptionConsumer());
             }
         }, recyclerView);
     }
@@ -111,24 +113,30 @@ public class PtrActivity extends BaseActivity {
                 .subscribe(new Consumer<List<ImageModule>>() {
                     @Override
                     public void accept(List<ImageModule> imageModules) throws Exception {
-                        Log.d("gankMeiziData", "----------real consumer----------");
-                        adapter.setNewData(imageModules);
+                        if (ListUtils.isListHasData(imageModules)) {
+                            adapter.setNewData(imageModules);
+                        } else {
+                            ptr.showOverlay(mEmptyView);
+                        }
                     }
-                }, new ExceptionConsumer<>(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        //ui show no data
-                    }
-                }));
+                }, getErrConsumer());
+
+        mLoadMoreConsumers = new PtrConsumers<>(adapter);
+        mEmptyView = new ListInfoView(this);
+        mErrorView = new ListInfoView(this);
+        mErrorView.setInfo(R.string.list_err, R.mipmap.empty_icon);
     }
 
     private ExceptionConsumer<Throwable> getErrConsumer() {
         return new ExceptionConsumer<>(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                //ui show no data
-
-                ptr.refreshComplete();
+                if (ptr.isRefreshing()) {
+                    ptr.setRefreshResultState(MyPtrFrameLayout.STATE_NET_ERR);
+                    ptr.refreshComplete();
+                } else {
+                    ptr.showOverlay(mErrorView);
+                }
             }
         });
     }

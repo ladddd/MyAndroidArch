@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HUSKAR</string>
+
+    <string name="list_err">AN ERROR OCCURRED</string>
 </resources>

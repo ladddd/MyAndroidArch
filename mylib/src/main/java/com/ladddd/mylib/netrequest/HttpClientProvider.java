@@ -85,6 +85,7 @@ public class HttpClientProvider {
                             .cache(cache)
 //                            .addInterceptor(new SampleRequestInterceptor()) //请求签名
 //                            .addInterceptor(new SampleResponseInterceptor()) //校验服务器时间
+                            .addInterceptor(new QueryParamInterceptor())
                             .addInterceptor(interceptor)
                             .addNetworkInterceptor(new StethoInterceptor())
                             .retryOnConnectionFailure(true)
