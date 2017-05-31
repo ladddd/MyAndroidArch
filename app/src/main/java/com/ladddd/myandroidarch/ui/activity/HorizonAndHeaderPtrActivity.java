@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.model.JianDanMeizi.JianDanMeiziData;
 import com.ladddd.myandroidarch.ui.adapter.TestListAdapter;
+import com.ladddd.myandroidarch.ui.view.ListInfoView;
 import com.ladddd.myandroidarch.viewmodel.HorizonAndHeaderPtrViewModel;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.netrequest.consumer.ExceptionConsumer;
@@ -19,6 +20,7 @@ import com.ladddd.mylib.ptr.MyPtrFrameLayout;
 import com.ladddd.mylib.ptr.PtrHelper;
 import com.ladddd.mylib.utils.ListUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,7 +38,12 @@ public class HorizonAndHeaderPtrActivity extends BaseActivity {
     @BindView(R.id.ptr)
     MyPtrFrameLayout ptr;
 
+    private List<JianDanMeiziData> mDatas;
+
     private TestListAdapter adapter;
+
+    private ListInfoView mEmptyView;
+    private ListInfoView mErrorView;
 
     private HorizonAndHeaderPtrViewModel mViewModel;
     private PtrConsumers<JianDanMeiziData> mLoadMoreConsumers;
@@ -52,7 +59,8 @@ public class HorizonAndHeaderPtrActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        adapter = new TestListAdapter();
+        mDatas = new ArrayList<>();
+        adapter = new TestListAdapter(mDatas);
         recyclerView.setAdapter(adapter);
 
         ptr.setHelper(new PtrHelper() {
@@ -63,8 +71,12 @@ public class HorizonAndHeaderPtrActivity extends BaseActivity {
             }
 
             @Override
-            public void handleRefreshEnd(int resultState) {
-
+            public void handleRefreshEnd(int stateCode) {
+                if (MyPtrFrameLayout.STATE_LIST_EMPTY == stateCode) {
+                    ptr.showOverlay(mEmptyView);
+                } else if (MyPtrFrameLayout.STATE_NET_ERR == stateCode) {
+                    ptr.showOverlay(mErrorView);
+                }
             }
         });
 
@@ -88,6 +100,9 @@ public class HorizonAndHeaderPtrActivity extends BaseActivity {
                 .subscribe(getFirstPageConsumer(), getErrConsumer());
 
         mLoadMoreConsumers = new PtrConsumers<>(adapter);
+        mEmptyView = new ListInfoView(this);
+        mErrorView = new ListInfoView(this);
+        mErrorView.setInfo(R.string.list_err, R.mipmap.empty_icon);
     }
 
     private Consumer<List<JianDanMeiziData>> getFirstPageConsumer() {
@@ -100,7 +115,7 @@ public class HorizonAndHeaderPtrActivity extends BaseActivity {
                 if (ListUtils.isListHasData(jianDanMeiziDatas)) {
                     adapter.setNewData(jianDanMeiziDatas);
                 } else {
-                    //ui show no data
+                    ptr.showOverlay(mEmptyView);
                 }
             }
         };
@@ -112,8 +127,10 @@ public class HorizonAndHeaderPtrActivity extends BaseActivity {
             public void accept(Throwable throwable) throws Exception {
                 if (ptr.isRefreshing()) {
                     ptr.refreshComplete();
+                    ptr.setRefreshResultState(MyPtrFrameLayout.STATE_NET_ERR);
+                } else {
+                    ptr.showOverlay(mEmptyView);
                 }
-                //ui show err
             }
         });
     }

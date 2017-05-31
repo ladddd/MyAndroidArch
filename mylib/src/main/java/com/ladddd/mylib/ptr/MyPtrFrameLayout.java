@@ -20,6 +20,7 @@ public class MyPtrFrameLayout extends PtrFrameLayout {
 
     private int refreshResultState = 0;
     private static final int mLoadingMinTime = 500;
+    private static final int mDurationToCloseHeader = 1000;
 
     private PtrHelper helper;
     private OverlayLayout mOverlayLayout;
@@ -49,6 +50,7 @@ public class MyPtrFrameLayout extends PtrFrameLayout {
 
     private void init(Context context) {
         setLoadingMinTime(mLoadingMinTime);
+        setDurationToCloseHeader(mDurationToCloseHeader);
         disableWhenHorizontalMove(true);
         setPtrHandler(new PtrDefaultHandler() {
             @Override
@@ -70,7 +72,12 @@ public class MyPtrFrameLayout extends PtrFrameLayout {
             public void onUIRefreshComplete() {
                 //only call when err occasion
                 if (helper != null) {
-                    helper.handleRefreshEnd(refreshResultState);
+                    postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            helper.handleRefreshEnd(refreshResultState);
+                        }
+                    }, mDurationToCloseHeader);
                 }
             }
         });
