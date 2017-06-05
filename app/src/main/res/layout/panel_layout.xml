@@ -8,6 +8,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:text="share"/>
+        android:textColor="@color/text_light"
+        android:text="share to …"/>
+
+    <View style="@style/DividerEdge"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 
 </LinearLayout>

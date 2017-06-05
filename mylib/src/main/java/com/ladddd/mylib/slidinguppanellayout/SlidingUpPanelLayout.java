@@ -925,18 +925,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
                 // If the dragView is still dragging when we get here, we need to call processTouchEvent
                 // so that the view is settled
                 // Added to make scrollable views work (tokudu)
-//                if (mDragHelper.isDragging()) {
-//                    mDragHelper.processTouchEvent(ev);
-//                    return true;
-//                }
-//                // Check if this was a click on the faded part of the screen, and fire off the listener if there is one.
-//                if (ady <= dragSlop
-//                        && adx <= dragSlop
-//                        && mSlideOffset > 0 && !isViewUnder(mSlideableView, (int) mInitialMotionX, (int) mInitialMotionY) && mFadeOnClickListener != null) {
-//                    playSoundEffect(android.view.SoundEffectConstants.CLICK);
-//                    mFadeOnClickListener.onClick(this);
-//                    return true;
-//                }
+                if (mDragHelper.isDragging()) {
+                    mDragHelper.processTouchEvent(ev);
+                    return true;
+                }
                 break;
         }
         return mDragHelper.shouldInterceptTouchEvent(ev);

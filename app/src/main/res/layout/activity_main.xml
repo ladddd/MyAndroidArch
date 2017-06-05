@@ -16,7 +16,8 @@
         app:umanoInitialState="collapsed"
         app:umanoAnchorPoint="0.5"
         app:umanoPanelHeight="0dp"
-        app:umanoShadowHeight="4dp">
+        app:umanoShadowHeight="4dp"
+        app:umanoScrollableView="@+id/recycler_share">
 
         <include layout="@layout/main_content"/>
 
