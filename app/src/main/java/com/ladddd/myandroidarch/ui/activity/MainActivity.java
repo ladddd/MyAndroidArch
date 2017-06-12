@@ -52,11 +52,16 @@ public class MainActivity extends BaseActivity {
                 adapter.setNewData(shareAppInfos);
                 if (SlidingUpPanelLayout.PanelState.ANCHORED != mSlidingUpPanelLayout.getPanelState()) {
                     mSlidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                    recyclerShare.scrollToPosition(0);
                 } else {
                     mSlidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 }
             }
         });
+    }
+
+    @OnClick(R.id.btn_bar) void goToBar() {
+        BarActivity.launch(this);
     }
 
     @Override

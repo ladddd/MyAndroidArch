@@ -25,6 +25,8 @@
         <activity android:name=".ui.activity.PtrActivity"/>
 
         <activity android:name=".ui.activity.HorizonAndHeaderPtrActivity"/>
+
+        <activity android:name=".ui.activity.BarActivity"/>
     </application>
 
 </manifest>

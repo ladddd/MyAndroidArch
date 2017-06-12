@@ -3,7 +3,6 @@ package com.ladddd.mylib;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.ladddd.mylib.event.BaseEvent;
 import com.ladddd.mylib.rx.Connectivity;

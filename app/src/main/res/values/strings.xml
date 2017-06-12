@@ -2,4 +2,7 @@
     <string name="app_name">HUSKAR</string>
 
     <string name="list_err">AN ERROR OCCURRED</string>
+
+    <string name="open">open</string>
+    <string name="close">close</string>
 </resources>
