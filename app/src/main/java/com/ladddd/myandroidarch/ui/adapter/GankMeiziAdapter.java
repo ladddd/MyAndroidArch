@@ -33,7 +33,7 @@ public class GankMeiziAdapter extends BaseQuickAdapter<ImageModule, BaseViewHold
             //stay its size before recycle
             ratioImageView.setRatio(item.getWidth(), item.getHeight());
         }
-        Glide.with(AppConfig.getContext())
+        Glide.with(mContext.getApplicationContext())
                 .load(item.getUrl())
                 .asBitmap()
                 .listener(new RequestListener<String, Bitmap>() {
@@ -55,7 +55,7 @@ public class GankMeiziAdapter extends BaseQuickAdapter<ImageModule, BaseViewHold
                 .placeholder(R.drawable.default_image)
                 .error(R.drawable.default_image)
                 .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((RatioImageView) holder.getView(R.id.iv_content));
 
     }

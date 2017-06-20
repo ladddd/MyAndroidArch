@@ -13,6 +13,7 @@ public class AppConfig {
         mContext = context;
     }
 
+    @Deprecated
     public static Context getContext() {
         return mContext;
     }

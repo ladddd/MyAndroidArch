@@ -21,13 +21,13 @@ public class HorizonListAdapter extends BaseQuickAdapter<String, BaseViewHolder>
 
     @Override
     protected void convert(BaseViewHolder holder, String item) {
-        Glide.with(AppConfig.getContext())
+        Glide.with(mContext.getApplicationContext())
                 .load(item)
                 .asBitmap()
                 .placeholder(R.drawable.default_image)
                 .error(R.drawable.default_image)
                 .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((ImageView) holder.getView(R.id.iv_content));
     }
 }

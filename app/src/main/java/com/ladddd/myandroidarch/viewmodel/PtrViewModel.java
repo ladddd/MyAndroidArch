@@ -2,10 +2,10 @@ package com.ladddd.myandroidarch.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
-import android.util.Log;
 
 import com.ladddd.myandroidarch.repository.GankMeiziRepository;
 import com.ladddd.myandroidarch.model.ImageModule;
+import com.ladddd.mylib.BaseActivity;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class PtrViewModel extends ViewModel {
     private int mPage;
     private int mPageSize;
     private List<ImageModule> mImageModules;
-    private RxAppCompatActivity mActivity; //need activity dependence to handle rx lifecycle
+    private BaseActivity mActivity; //need activity dependence to handle rx lifecycle
 
     private GankMeiziRepository mGankMeiziRepo;
 
@@ -29,7 +29,7 @@ public class PtrViewModel extends ViewModel {
         mGankMeiziRepo = gankMeiziRepo;
     }
 
-    public void init(RxAppCompatActivity activity, int page, int pageSize) {
+    public void init(BaseActivity activity, int page, int pageSize) {
         mActivity = activity;
         mPage = page;
         mPageSize = pageSize;

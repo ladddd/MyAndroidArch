@@ -3,6 +3,7 @@ package com.ladddd.mylib.rx;
 import com.ladddd.mylib.netrequest.entity.HttpResult;
 import com.ladddd.mylib.netrequest.exception.BusinessException;
 import com.ladddd.mylib.netrequest.exception.ServerException;
+import com.ladddd.mylib.rx.network.StatusResponse;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -17,11 +18,11 @@ import retrofit2.Response;
 public class ObservableHelper {
 
     //handle response, if business result code is not assign success, throw exception
-    public static <T> ObservableTransformer<Response<HttpResult<T>>, T> handleResult() {
+    public static <T> ObservableTransformer<Response<HttpResult<T>>, T> handleHttpResult() {
         return new ObservableTransformer<Response<HttpResult<T>>, T>() {
             @Override
             public ObservableSource<T> apply(Observable<Response<HttpResult<T>>> upstream) {
-                upstream.map(new Function<Response<HttpResult<T>>, T>() {
+                return upstream.map(new Function<Response<HttpResult<T>>, T>() {
                     @Override
                     public T apply(Response<HttpResult<T>> httpResultResponse) throws Exception {
                         if (!httpResultResponse.isSuccessful() || null == httpResultResponse.body()) {
@@ -34,7 +35,45 @@ public class ObservableHelper {
                         return httpResultResponse.body().getData();
                     }
                 });
-                return null;
+            }
+        };
+    }
+
+    public static <T> ObservableTransformer<Response<T>, StatusResponse<T>> handleResult() {
+        return new ObservableTransformer<Response<T>, StatusResponse<T>>() {
+            @Override
+            public ObservableSource<StatusResponse<T>> apply(Observable<Response<T>> upstream) {
+                return upstream.map(new Function<Response<T>, StatusResponse<T>>() {
+                    @Override
+                    public StatusResponse<T> apply(Response<T> tResponse) throws Exception {
+                        StatusResponse<T> statusResponse = new StatusResponse<>();
+                        if (!tResponse.isSuccessful() || null == tResponse.body()) {
+//                            throw new ServerException(tResponse.code(), tResponse.message());
+                            statusResponse.setStatus(StatusResponse.Status.NETERR);
+                        } else {
+                            statusResponse.setStatus(StatusResponse.Status.OK);
+                            statusResponse.setResponse(tResponse.body());
+                        }
+                        return statusResponse;
+                    }
+                });
+            }
+        };
+    }
+
+    public static <T> ObservableTransformer<Response<T>, T> handleResponse() {
+        return new ObservableTransformer<Response<T>, T>() {
+            @Override
+            public ObservableSource<T> apply(Observable<Response<T>> upstream) {
+                return upstream.map(new Function<Response<T>, T>() {
+                    @Override
+                    public T apply(Response<T> tResponse) throws Exception {
+                        if (!tResponse.isSuccessful() || null == tResponse.body()) {
+
+                        }
+                        return tResponse.body();
+                    }
+                });
             }
         };
     }

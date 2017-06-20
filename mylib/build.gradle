@@ -51,6 +51,9 @@ dependencies {
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
+    //db
+    compile 'io.objectbox:objectbox-android:0.9.12'
+
     //eventbus
     compile 'org.greenrobot:eventbus:3.0.0'
 

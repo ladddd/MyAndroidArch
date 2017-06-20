@@ -44,7 +44,7 @@ public class TestListAdapter extends BaseMultiItemQuickAdapter<JianDanMeiziData,
         holder.setText(R.id.tv_sub, item.commentAgent);
 
         if (ListUtils.isListHasData(item.pics)) {
-            Glide.with(AppConfig.getContext())
+            Glide.with(mContext.getApplicationContext())
                     .load(item.pics.get(0))
                     .asBitmap()
                     .placeholder(R.drawable.default_image)

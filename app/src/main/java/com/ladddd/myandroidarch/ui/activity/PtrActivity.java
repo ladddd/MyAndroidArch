@@ -74,7 +74,7 @@ public class PtrActivity extends BaseActivity {
                                     ptr.setRefreshResultState(MyPtrFrameLayout.STATE_LIST_EMPTY);
                                 } else {
                                     //ugly fix contain same data
-                                    if (!imageModules.get(0).getId().equals(adapter.getData().get(0).getId())) {
+                                    if (imageModules.get(0).getId() != adapter.getData().get(0).getId()) {
                                         adapter.setNewData(imageModules);
                                     }
 

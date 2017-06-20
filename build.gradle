@@ -11,10 +11,21 @@ buildscript {
 }
 
 allprojects {
+
+    buildscript {
+        repositories {
+            jcenter()
+            maven { url 'https://maven.google.com' }
+            maven { url "https://jitpack.io" }
+            maven { url "http://objectbox.net/beta-repo/" }
+        }
+    }
+
     repositories {
         jcenter()
         maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
+        maven { url "http://objectbox.net/beta-repo/" }
     }
 }
 
