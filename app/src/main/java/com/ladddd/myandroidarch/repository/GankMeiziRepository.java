@@ -5,6 +5,7 @@ import com.ladddd.myandroidarch.model.GankMeiziInfo;
 import com.ladddd.myandroidarch.model.GankMeiziResult;
 import com.ladddd.myandroidarch.model.ImageModule;
 import com.ladddd.myandroidarch.model.dao.GankMeiziDao;
+import com.ladddd.myandroidarch.model.dao.GankMeiziDao_;
 import com.ladddd.myandroidarch.repository.api.GankApi;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.MyApp;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
+import io.objectbox.query.Query;
+import io.objectbox.query.QueryBuilder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -58,16 +61,16 @@ public class GankMeiziRepository {
                 .map(new Function<StatusResponse<GankMeiziResult>, GankMeiziResult>() {
                     @Override
                     public GankMeiziResult apply(StatusResponse<GankMeiziResult> response) throws Exception {
-                        int index = page - 1;
                         GankMeiziResult gankMeiziResult = response.getResponse();
                         if (StatusResponse.Status.NETERR.equals(response.getStatus())) {
                             //offline, load from db
-                            //TODO replace id with page
-                            GankMeiziDao gankMeiziDao = gankMeiziBox.get(index);
+                            QueryBuilder<GankMeiziDao> builder = gankMeiziBox.query().equal(GankMeiziDao_.page, page);
+                            Query<GankMeiziDao> query =  builder.build();
+                            GankMeiziDao gankMeiziDao = query.findFirst();
                             gankMeiziResult = new GankMeiziResult(gankMeiziDao);
                         } else {
                             //update db date
-                            GankMeiziDao gankMeiziDao = new GankMeiziDao(index, gankMeiziResult);
+                            GankMeiziDao gankMeiziDao = new GankMeiziDao(page, gankMeiziResult);
                             gankMeiziBox.put(gankMeiziDao);
                         }
                         return gankMeiziResult;
@@ -103,9 +106,9 @@ public class GankMeiziRepository {
         return Observable.create(new ObservableOnSubscribe<GankMeiziResult>() {
             @Override
             public void subscribe(ObservableEmitter<GankMeiziResult> e) throws Exception {
-                int index = page - 1;
-                //TODO replace id with page
-                GankMeiziDao gankMeiziDao = gankMeiziBox.get(index);
+                QueryBuilder<GankMeiziDao> builder = gankMeiziBox.query().equal(GankMeiziDao_.page, page);
+                Query<GankMeiziDao> query =  builder.build();
+                GankMeiziDao gankMeiziDao = query.findFirst();
                 GankMeiziResult gankMeiziResult = new GankMeiziResult(gankMeiziDao);
                 e.onNext(gankMeiziResult);
             }

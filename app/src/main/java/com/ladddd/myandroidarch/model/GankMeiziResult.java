@@ -15,6 +15,9 @@ public class GankMeiziResult {
   public List<GankMeiziInfo> gankMeizis;
 
   public GankMeiziResult(GankMeiziDao gankMeiziDao) {
+      if (gankMeiziDao == null) {
+          return;
+      }
       error = gankMeiziDao.error;
       gankMeizis = JsonUtils.jsonToObject(gankMeiziDao.gankMeiziListString,
               new TypeToken<List<GankMeiziInfo>>(){}.getType());
