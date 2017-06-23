@@ -13,9 +13,9 @@ import com.ladddd.mylib.config.AppConfig;
  * Created by 陈伟达 on 2017/5/31.
  */
 
-public class HorizonListAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class JianDanHorizonListAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
-    public HorizonListAdapter() {
+    public JianDanHorizonListAdapter() {
         super(R.layout.sub_item_horizon_list);
     }
 

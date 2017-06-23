@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -10,14 +11,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- The main content view -->
-        <FrameLayout
+        <android.support.design.widget.CoordinatorLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
-            <include layout="@layout/header_bar"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_co"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        </FrameLayout>
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/header_bar"/>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <!--<include layout="@layout/bottom_sheet"/>-->
+            <com.ladddd.myandroidarch.ui.view.HomeBottomSheet
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:cardElevation="8dp"
+                app:layout_behavior="com.ladddd.myandroidarch.ui.view.behavior.BottomSheetBehavior"/>
+
+        </android.support.design.widget.CoordinatorLayout>
         <!-- The navigation drawer -->
         <ListView android:id="@+id/left_drawer"
                   android:layout_width="240dp"

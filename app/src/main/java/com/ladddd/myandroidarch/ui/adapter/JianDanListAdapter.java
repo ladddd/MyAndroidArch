@@ -10,7 +10,6 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.model.JianDanMeizi.JianDanMeiziData;
-import com.ladddd.mylib.config.AppConfig;
 import com.ladddd.mylib.utils.ListUtils;
 
 import java.util.List;
@@ -19,9 +18,9 @@ import java.util.List;
  * Created by 陈伟达 on 2017/5/22.
  */
 
-public class TestListAdapter extends BaseMultiItemQuickAdapter<JianDanMeiziData, BaseViewHolder> {
+public class JianDanListAdapter extends BaseMultiItemQuickAdapter<JianDanMeiziData, BaseViewHolder> {
 
-    public TestListAdapter(List<JianDanMeiziData> data) {
+    public JianDanListAdapter(List<JianDanMeiziData> data) {
         super(data);
         addItemType(JianDanMeiziData.NORMAL, R.layout.item_test_list);
         addItemType(JianDanMeiziData.HORIZON_LIST, R.layout.item_horizon_list);
@@ -60,9 +59,9 @@ public class TestListAdapter extends BaseMultiItemQuickAdapter<JianDanMeiziData,
         if (null == recyclerView.getLayoutManager()) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         }
-        HorizonListAdapter adapter = (HorizonListAdapter) recyclerView.getAdapter();
+        JianDanHorizonListAdapter adapter = (JianDanHorizonListAdapter) recyclerView.getAdapter();
         if (null == adapter) {
-            adapter = new HorizonListAdapter();
+            adapter = new JianDanHorizonListAdapter();
             recyclerView.setAdapter(adapter);
         }
         for (int i = 0; i < 10; i++) {

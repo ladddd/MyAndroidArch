@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <declare-styleable name="SelectableTabView">
+        <attr name="initialSelected" format="boolean"/>
+        <attr name="drawableNormal" format="reference"/>
+        <attr name="drawableSelected" format="reference"/>
+        <attr name="textSizeNormal" format="dimension"/>
+        <attr name="textSizeSelected" format="dimension"/>
+        <attr name="colorNormal" format="color"/>
+        <attr name="colorSelected" format="color"/>
+        <attr name="tabText" format="string"/>
+    </declare-styleable>
+</resources>

@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.model.JianDanMeizi.JianDanMeiziData;
-import com.ladddd.myandroidarch.ui.adapter.TestListAdapter;
+import com.ladddd.myandroidarch.ui.adapter.JianDanListAdapter;
 import com.ladddd.myandroidarch.ui.view.ListInfoView;
 import com.ladddd.myandroidarch.viewmodel.HorizonAndHeaderPtrViewModel;
 import com.ladddd.mylib.BaseActivity;
@@ -40,7 +40,7 @@ public class HorizonAndHeaderPtrActivity extends BaseActivity {
 
     private List<JianDanMeiziData> mDatas;
 
-    private TestListAdapter adapter;
+    private JianDanListAdapter adapter;
 
     private ListInfoView mEmptyView;
     private ListInfoView mErrorView;
@@ -60,7 +60,7 @@ public class HorizonAndHeaderPtrActivity extends BaseActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mDatas = new ArrayList<>();
-        adapter = new TestListAdapter(mDatas);
+        adapter = new JianDanListAdapter(mDatas);
         recyclerView.setAdapter(adapter);
 
         ptr.setHelper(new PtrHelper() {
