@@ -111,6 +111,7 @@ public class GankMeiziRepository {
                 GankMeiziDao gankMeiziDao = query.findFirst();
                 GankMeiziResult gankMeiziResult = new GankMeiziResult(gankMeiziDao);
                 e.onNext(gankMeiziResult);
+                e.onComplete();
             }
         }).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

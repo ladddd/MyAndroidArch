@@ -35,6 +35,7 @@ public class MainViewModel extends ViewModel {
                 @Override
                 public void subscribe(ObservableEmitter<List<ShareAppInfo>> e) throws Exception {
                     e.onNext(mShareAppInfos);
+                    e.onComplete();
                 }
             });
         }

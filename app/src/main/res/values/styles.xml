@@ -11,6 +11,11 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="PicBrowserTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <!--<item name="android:windowLightStatusBar">false</item>-->
+    </style>
+
     <style name="DividerEdge">
         <item name="android:layout_height">1px</item>
         <item name="android:layout_width">match_parent</item>

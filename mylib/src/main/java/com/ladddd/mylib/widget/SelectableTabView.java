@@ -7,6 +7,8 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +27,12 @@ public class SelectableTabView extends RelativeLayout {
     private static final long ANIMATION_DURATION = 300;
 
     protected boolean selected = false;
+    protected int unreadCount;
 
     protected TextView tv_tab_text;
     protected ImageView iv_tab_icon;
+    protected TextView tv_unread;
+    protected ImageView iv_notice;
 
     protected int normalDrawableResId;
     protected int selectedDrawableResId;
@@ -46,6 +51,8 @@ public class SelectableTabView extends RelativeLayout {
         View contentView = LayoutInflater.from(context).inflate(R.layout.selecteable_tab_view, this);
         tv_tab_text = (TextView) contentView.findViewById(R.id.tv_tab_text);
         iv_tab_icon = (ImageView) contentView.findViewById(R.id.iv_tab_icon);
+        tv_unread = (TextView) contentView.findViewById(R.id.tv_unread);
+        iv_notice = (ImageView) contentView.findViewById(R.id.iv_notice);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SelectableTabView);
         normalDrawableResId = typedArray.getResourceId(R.styleable.SelectableTabView_drawableNormal, R.drawable.loading); //test loading res id
@@ -58,18 +65,22 @@ public class SelectableTabView extends RelativeLayout {
         selected = typedArray.getBoolean(R.styleable.SelectableTabView_initialSelected, false);
         typedArray.recycle();
 
+        //ripple effect
+        if (Build.VERSION_CODES.LOLLIPOP <= Build.VERSION.SDK_INT) {
+            typedArray = context.obtainStyledAttributes(new int[]{R.attr.selectableItemBackgroundBorderless});
+            Drawable drawable = typedArray.getDrawable(0);
+            setBackground(drawable);
+        } else {
+            typedArray = context.obtainStyledAttributes(new int[]{R.attr.selectableItemBackground});
+            Drawable drawable = typedArray.getDrawable(0);
+            setBackgroundDrawable(drawable);
+        }
+        typedArray.recycle();
+
         iv_tab_icon.setImageResource(selected?selectedDrawableResId:normalDrawableResId);
         tv_tab_text.setTextColor(selected?selectedColor:normalColor);
         tv_tab_text.setTextSize(selected?selectedTextSize:normalTextSize);
         tv_tab_text.setText(tabText);
-    }
-
-    public void toggle() {
-        if (selected) {
-            setTabUnSelected();
-        } else {
-            setTabSelected();
-        }
     }
 
     public void setTabSelected() {
@@ -116,5 +127,28 @@ public class SelectableTabView extends RelativeLayout {
         set.play(sizeAnimator).with(colorAnimator);
         set.setDuration(ANIMATION_DURATION);
         set.start();
+    }
+
+    public void setUnreadCount(int count) {
+        unreadCount = count;
+        showUnread();
+    }
+
+    public void addUnreadCount() {
+        unreadCount++;
+        showUnread();
+    }
+
+    public void showNotice(boolean show) {
+        iv_notice.setVisibility(show?VISIBLE:GONE);
+    }
+
+    private void showUnread() {
+        if (unreadCount <= 0) {
+            tv_unread.setVisibility(GONE);
+        } else {
+            tv_unread.setVisibility(VISIBLE);
+            tv_unread.setText(unreadCount>=100?"99+":String.valueOf(unreadCount));
+        }
     }
 }

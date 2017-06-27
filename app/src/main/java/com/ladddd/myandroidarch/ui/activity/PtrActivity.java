@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ladddd.myandroidarch.R;
@@ -33,7 +34,7 @@ import io.reactivex.functions.Consumer;
 
 public class PtrActivity extends BaseActivity {
 
-    private GankMeiziAdapter adapter;
+    private GankMeiziAdapter mAdapter;
     private PtrViewModel mGankMeiziViewModel;
     private PtrConsumers<ImageModule> mLoadMoreConsumers;
 
@@ -59,8 +60,14 @@ public class PtrActivity extends BaseActivity {
 //        GridLayoutManager layoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(null); //avoid staggeredGridLayoutManager wired animation during view convert
-        adapter = new GankMeiziAdapter();
-        recyclerView.setAdapter(adapter);
+        mAdapter = new GankMeiziAdapter();
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                PicBrowserActivity.launch(PtrActivity.this, mGankMeiziViewModel.getImageUrls(), position);
+            }
+        });
+        recyclerView.setAdapter(mAdapter);
 
         ptr.setHelper(new PtrHelper() {
             public void handleRefreshBegin() {
@@ -74,8 +81,8 @@ public class PtrActivity extends BaseActivity {
                                     ptr.setRefreshResultState(MyPtrFrameLayout.STATE_LIST_EMPTY);
                                 } else {
                                     //ugly fix contain same data
-                                    if (imageModules.get(0).getId() != adapter.getData().get(0).getId()) {
-                                        adapter.setNewData(imageModules);
+                                    if (imageModules.get(0).getId() != mAdapter.getData().get(0).getId()) {
+                                        mAdapter.setNewData(imageModules);
                                     }
 
                                 }
@@ -93,7 +100,7 @@ public class PtrActivity extends BaseActivity {
             }
         });
 
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 mGankMeiziViewModel.getNextImageModules()
@@ -114,14 +121,14 @@ public class PtrActivity extends BaseActivity {
                     @Override
                     public void accept(List<ImageModule> imageModules) throws Exception {
                         if (ListUtils.isListHasData(imageModules)) {
-                            adapter.setNewData(imageModules);
+                            mAdapter.setNewData(imageModules);
                         } else {
                             ptr.showOverlay(mEmptyView);
                         }
                     }
                 }, getErrConsumer());
 
-        mLoadMoreConsumers = new PtrConsumers<>(adapter);
+        mLoadMoreConsumers = new PtrConsumers<>(mAdapter);
         mEmptyView = new ListInfoView(this);
         mErrorView = new ListInfoView(this);
         mErrorView.setInfo(R.string.list_err, R.mipmap.empty_icon);

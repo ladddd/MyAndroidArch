@@ -4,34 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 
 import com.ladddd.myandroidarch.R;
-import com.ladddd.myandroidarch.ui.adapter.TestAdapter;
+import com.ladddd.myandroidarch.ui.fragment.BarFragment;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.utils.DimenUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by 陈伟达 on 2017/6/8.
@@ -42,9 +32,8 @@ public class BarActivity extends BaseActivity {
     private boolean isTransparent = false;
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.recycler_co) RecyclerView mRecyclerView;
-
-    private TestAdapter adapter;
+    @BindView(R.id.tablayout) TabLayout tablayout;
+    @BindView(R.id.viewpager) ViewPager viewpager;
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, BarActivity.class);
@@ -82,31 +71,30 @@ public class BarActivity extends BaseActivity {
             mToolbar.setPadding(0, DimenUtils.getStatusBarHeight(this), 0, 0);
         }
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        mRecyclerView.setNestedScrollingEnabled(true);
+        //TODO more efficient fragment management
+        viewpager.setOffscreenPageLimit(4);
+        viewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return BarFragment.newInstance();
+            }
+
+            @Override
+            public int getCount() {
+                return 4;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return "频道" + String.valueOf(position+1);
+            }
+        });
+
+        tablayout.setupWithViewPager(viewpager);
     }
 
     @Override
     protected void initData() {
-        adapter = new TestAdapter();
-        mRecyclerView.setAdapter(adapter);
 
-        Observable.create(new ObservableOnSubscribe<List<Integer>>() {
-            @Override
-            public void subscribe(ObservableEmitter<List<Integer>> e) throws Exception {
-                List<Integer> testList = new ArrayList<>();
-                for (int i = 0; i < 100; i++) {
-                    testList.add(i);
-                }
-                e.onNext(testList);
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<Integer>>() {
-            @Override
-            public void accept(List<Integer> integers) throws Exception {
-                adapter.setNewData(integers);
-            }
-        });
     }
 }

@@ -49,8 +49,9 @@ public class ShareRepository {
                 }
                 Collections.sort(shareAppInfoList);
                 e.onNext(shareAppInfoList);
+                e.onComplete();
             }
-        }).subscribeOn(Schedulers.newThread())
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.<List<ShareAppInfo>>bindToLifecycle());
     }

@@ -24,6 +24,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import me.jessyan.progressmanager.ProgressManager;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -81,7 +82,8 @@ public class HttpClientProvider {
                     KeyStore keyStore = getKeyStore(CER_12306);
                     TrustManager[] trustManagers = getTrustManagers(keyStore);
 
-                    mOkHttpClient = new OkHttpClient.Builder()
+                    //progress listener
+                    mOkHttpClient = ProgressManager.getInstance().with(new OkHttpClient.Builder())
                             .cache(cache)
 //                            .addInterceptor(new SampleRequestInterceptor()) //请求签名
 //                            .addInterceptor(new SampleResponseInterceptor()) //校验服务器时间

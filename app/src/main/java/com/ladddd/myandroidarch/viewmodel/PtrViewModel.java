@@ -6,8 +6,8 @@ import android.arch.lifecycle.ViewModelProvider;
 import com.ladddd.myandroidarch.repository.GankMeiziRepository;
 import com.ladddd.myandroidarch.model.ImageModule;
 import com.ladddd.mylib.BaseActivity;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -21,6 +21,7 @@ public class PtrViewModel extends ViewModel {
     private int mPage;
     private int mPageSize;
     private List<ImageModule> mImageModules;
+    private ArrayList<String> imageUrls = new ArrayList<>();
     private BaseActivity mActivity; //need activity dependence to handle rx lifecycle
 
     private GankMeiziRepository mGankMeiziRepo;
@@ -42,6 +43,10 @@ public class PtrViewModel extends ViewModel {
                     @Override
                     public void accept(List<ImageModule> imageModules) throws Exception {
                         mImageModules = imageModules;
+                        imageUrls.clear();
+                        for (ImageModule imageModule : mImageModules) {
+                            imageUrls.add(imageModule.getUrl());
+                        }
                     }
                 });
     }
@@ -51,7 +56,10 @@ public class PtrViewModel extends ViewModel {
                 .doOnNext(new Consumer<List<ImageModule>>() {
                     @Override
                     public void accept(List<ImageModule> imageModules) throws Exception {
-                        mImageModules = imageModules;
+                        mImageModules.addAll(imageModules);
+                        for (ImageModule imageModule : mImageModules) {
+                            imageUrls.add(imageModule.getUrl());
+                        }
                     }
                 });
     }
@@ -66,5 +74,9 @@ public class PtrViewModel extends ViewModel {
         public <T extends ViewModel> T create(Class<T> modelClass) {
             return (T) new PtrViewModel(new GankMeiziRepository());
         }
+    }
+
+    public ArrayList<String> getImageUrls() {
+        return imageUrls;
     }
 }

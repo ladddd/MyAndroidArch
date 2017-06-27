@@ -10,7 +10,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.model.ImageModule;
-import com.ladddd.mylib.config.AppConfig;
 import com.ladddd.mylib.widget.RatioImageView;
 
 
