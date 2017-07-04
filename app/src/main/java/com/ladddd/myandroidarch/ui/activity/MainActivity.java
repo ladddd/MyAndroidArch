@@ -64,6 +64,10 @@ public class MainActivity extends BaseActivity {
         BarActivity.launch(this);
     }
 
+    @OnClick(R.id.btn_collapse_bar) void goToCollapseBar() {
+        CollapseBarActivity.launch(this);
+    }
+
     @Override
     protected void initView() {
         setContentView(R.layout.activity_main);

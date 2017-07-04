@@ -33,6 +33,8 @@
 
         <activity android:name=".ui.activity.BarActivity"/>
 
+        <activity android:name=".ui.activity.CollapseBarActivity"/>
+
         <activity android:name=".ui.activity.PicBrowserActivity"
             android:theme="@style/PicBrowserTheme"/>
     </application>
