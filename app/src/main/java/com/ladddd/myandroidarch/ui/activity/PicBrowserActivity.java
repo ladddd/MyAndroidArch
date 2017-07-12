@@ -7,10 +7,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.ui.fragment.PicBrowserFragment;
 import com.ladddd.mylib.BaseActivity;
+import com.ladddd.mylib.utils.StorageUtils;
 import com.ladddd.mylib.widget.viewpager.DepthTransformer;
 
 import java.util.ArrayList;
@@ -29,6 +31,8 @@ public class PicBrowserActivity extends BaseActivity {
 
     @BindView(R.id.vp_pics)
     ViewPager vp_pics;
+    @BindView(R.id.tv_save)
+    TextView tv_save;
 
     public static void launch(Context context, ArrayList<String> imageList, int startIndex) {
         Intent intent = new Intent(context, PicBrowserActivity.class);
@@ -68,5 +72,13 @@ public class PicBrowserActivity extends BaseActivity {
         });
         vp_pics.setPageTransformer(true, new DepthTransformer());
         vp_pics.setCurrentItem(startIndex);
+
+        tv_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StorageUtils.getInstance().dowloadImageToLocal(PicBrowserActivity.this,
+                        imageList.get(vp_pics.getCurrentItem()));
+            }
+        });
     }
 }

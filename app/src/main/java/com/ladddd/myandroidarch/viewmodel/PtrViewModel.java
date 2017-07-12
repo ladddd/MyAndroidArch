@@ -57,7 +57,7 @@ public class PtrViewModel extends ViewModel {
                     @Override
                     public void accept(List<ImageModule> imageModules) throws Exception {
                         mImageModules.addAll(imageModules);
-                        for (ImageModule imageModule : mImageModules) {
+                        for (ImageModule imageModule : imageModules) {
                             imageUrls.add(imageModule.getUrl());
                         }
                     }
