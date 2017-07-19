@@ -57,11 +57,11 @@ public class CacheUtils {
     private static Map<String, CacheUtils> map = new HashMap<>();
     private CacheManager cm;
 
-    public CacheUtils getInstance() {
+    public static CacheUtils getInstance() {
         return getInstance("");
     }
 
-    public CacheUtils getInstance(String name) {
+    public static CacheUtils getInstance(String name) {
         return getInstance(name, DEFAULT_MAX_SIZE, DEFAULT_MAX_COUNT);
     }
 
@@ -72,7 +72,7 @@ public class CacheUtils {
      * @param maxCount 最大缓存文件个数
      * @return
      */
-    public CacheUtils getInstance(String name, long maxSize, int maxCount) {
+    public static CacheUtils getInstance(String name, long maxSize, int maxCount) {
         File file = new File(AppConfig.getContext().getCacheDir(), name);
         String cacheKey = file.getAbsolutePath() + "_" + Process.myPid();
         if (map.containsKey(cacheKey)) {

@@ -1,9 +1,13 @@
 package com.ladddd.myandroidarch.ui.activity;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,33 +15,40 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
+import com.bilibili.magicasakura.utils.ThemeUtils;
+import com.bilibili.magicasakura.widgets.TintSwitchCompat;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.model.ShareAppInfo;
 import com.ladddd.myandroidarch.ui.adapter.ShareAdapter;
 import com.ladddd.myandroidarch.viewmodel.MainViewModel;
 import com.ladddd.mylib.BaseActivity;
+import com.ladddd.mylib.config.AppConfig;
 import com.ladddd.mylib.slidinguppanellayout.SlidingUpPanelLayout;
 import com.ladddd.mylib.utils.DimenUtils;
+import com.ladddd.mylib.utils.SPUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 
 public class MainActivity extends BaseActivity {
 
+    private MainViewModel mViewModel;
+    private ShareAdapter adapter;
+
+    private boolean slidingUpPanelPopped = false;
+
     @BindView(R.id.btn_ptr) Button btnGotoPtr;
     @BindView(R.id.btn_share) Button btnShowShare;
     @BindView(R.id.sliding_layout) SlidingUpPanelLayout mSlidingUpPanelLayout;
     @BindView(R.id.recycler_share) RecyclerView recyclerShare;
-
-    private MainViewModel mViewModel;
-
-    private ShareAdapter adapter;
+    @BindView(R.id.sw_night_mode) TintSwitchCompat tintSwitch;
 
     @OnClick(R.id.btn_ptr) void goToPtr() {
         PtrActivity.open(this);
@@ -46,6 +57,11 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.btn_h_ptr) void goToHPtr() {HorizonAndHeaderPtrActivity.open(this);}
 
     @OnClick(R.id.btn_share) void showSharePanel() {
+        if (mViewModel == null) {
+            MainViewModel.Factory factory = new MainViewModel.Factory();
+            mViewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
+            mViewModel.init(this);
+        }
         mViewModel.getShareAppInfos().subscribe(new Consumer<List<ShareAppInfo>>() {
             @Override
             public void accept(List<ShareAppInfo> shareAppInfos) throws Exception {
@@ -66,6 +82,19 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_collapse_bar) void goToCollapseBar() {
         CollapseBarActivity.launch(this);
+    }
+
+    @OnClick(R.id.btn_storage) void goToStorageTest() {
+        StorageTestActivity.launch(this);
+    }
+
+    @OnClick(R.id.ib_change_theme) void goToThemeChange() {
+        ThemeActivity.launch(this);
+    }
+
+    @OnCheckedChanged(R.id.sw_night_mode) void switchNightMode(boolean checked) {
+        //change theme
+        toggleNightMode(checked);
     }
 
     @Override
@@ -99,6 +128,8 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
+        tintSwitch.setChecked(SPUtils.getInstance("multiple_theme").getBoolean("is_night_mode", false));
     }
 
     @Override
@@ -109,10 +140,6 @@ public class MainActivity extends BaseActivity {
                 mSlidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
         });
-
-        MainViewModel.Factory factory = new MainViewModel.Factory();
-        mViewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
-        mViewModel.init(this);
     }
 
     @Override
@@ -121,5 +148,54 @@ public class MainActivity extends BaseActivity {
         Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
         launcherIntent.addCategory(Intent.CATEGORY_HOME);
         startActivity(launcherIntent);
+    }
+
+    @Override
+    protected void handleSavedInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            slidingUpPanelPopped = savedInstanceState.getBoolean("isPopped", false);
+        }
+        if (slidingUpPanelPopped) {
+            showSharePanel();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        slidingUpPanelPopped = mSlidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED ||
+                mSlidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED;
+        outState.putBoolean("isPopped", slidingUpPanelPopped);
+    }
+
+    private void toggleNightMode(boolean isChecked) {
+        ThemeUtils.updateNightMode(getResources(), isChecked);
+        SPUtils.getInstance("multiple_theme").put("is_night_mode", isChecked);
+        AppConfig.resetNightMode();
+        ThemeUtils.refreshUI(MainActivity.this, new ThemeUtils.ExtraRefreshable() {
+                    @Override
+                    public void refreshGlobal(Activity activity) {
+                        //for global setting, just do once
+                    }
+
+                    @Override
+                    public void refreshSpecificView(View view) {
+                        //TODO: will do this for each traversal
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            final MainActivity context = MainActivity.this;
+                            ActivityManager.TaskDescription taskDescription =
+                                    new ActivityManager.TaskDescription(null, null,
+                                            ThemeUtils.getThemeAttrColor(context, android.R.attr.colorPrimary));
+                            setTaskDescription(taskDescription);
+
+                            getWindow().setStatusBarColor(ThemeUtils.getColorById(context, R.color.theme_color_primary_dark));
+                        }
+                    }
+                }
+        );
+        //support toggle day/night will recreate the activity; but magicsakura wont
+//        getDelegate().setLocalNightMode(isChecked?
+//                AppCompatDelegate.MODE_NIGHT_YES
+//                :AppCompatDelegate.MODE_NIGHT_NO);
     }
 }

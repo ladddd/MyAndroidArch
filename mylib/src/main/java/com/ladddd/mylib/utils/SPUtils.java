@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.ladddd.mylib.config.AppConfig;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -40,31 +41,79 @@ public class SPUtils {
         sp = AppConfig.getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
-    public void put(String key, @NonNull final String value) {
+    public void put(@NonNull String key, @NonNull final String value) {
         sp.edit().putString(key, value).apply();
     }
 
-    public void put(String key, final int value) {
+    public void put(@NonNull String key, final int value) {
         sp.edit().putInt(key, value).apply();
     }
 
-    public void put(String key, final float value) {
+    public void put(@NonNull String key, final float value) {
         sp.edit().putFloat(key, value).apply();
     }
 
-    public void put(String key, final long value) {
+    public void put(@NonNull String key, final long value) {
         sp.edit().putLong(key, value).apply();
     }
 
-    public void put(String key, final boolean value) {
+    public void put(@NonNull String key, final boolean value) {
         sp.edit().putBoolean(key, value).apply();
     }
 
-    public void put(String key, @NonNull final Set<String> value) {
+    public void put(@NonNull String key, @NonNull final Set<String> value) {
         sp.edit().putStringSet(key, value).apply();
     }
 
-    public boolean contains(String key) {
+    public String getString(@NonNull String key) {
+        return sp.getString(key, "");
+    }
+
+    public String getString(@NonNull String key, String defaultValue) {
+        return sp.getString(key, defaultValue);
+    }
+
+    public int getInt(@NonNull String key) {
+        return sp.getInt(key, 0);
+    }
+
+    public int getInt(@NonNull String key, int defaultValue) {
+        return sp.getInt(key, defaultValue);
+    }
+
+    public float getFloat(@NonNull String key) {
+        return sp.getFloat(key, 0);
+    }
+
+    public float getFloat(@NonNull String key, float defaultValue) {
+        return sp.getFloat(key, defaultValue);
+    }
+
+    public long getLong(@NonNull String key) {
+        return sp.getLong(key, 0);
+    }
+
+    public long getLong(@NonNull String key, long defaultValue) {
+        return sp.getLong(key, defaultValue);
+    }
+
+    public boolean getBoolean(@NonNull String key) {
+        return sp.getBoolean(key, false);
+    }
+
+    public boolean getBoolean(@NonNull String key, boolean defaultValue) {
+        return sp.getBoolean(key, defaultValue);
+    }
+
+    public Set<String> getStringSet(@NonNull String key) {
+        return sp.getStringSet(key, Collections.<String>emptySet());
+    }
+
+    public Set<String> getStringSet(@NonNull String key, @NonNull Set<String> defaultValue) {
+        return sp.getStringSet(key, defaultValue);
+    }
+
+    public boolean contains(@NonNull String key) {
         return sp.contains(key);
     }
 
@@ -72,7 +121,7 @@ public class SPUtils {
         return sp.getAll();
     }
 
-    public void remove(String key) {
+    public void remove(@NonNull String key) {
         sp.edit().remove(key).apply();
     }
 

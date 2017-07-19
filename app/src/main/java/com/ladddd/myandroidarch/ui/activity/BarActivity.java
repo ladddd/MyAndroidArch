@@ -10,13 +10,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.bilibili.magicasakura.widgets.TintToolbar;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.ui.fragment.BarFragment;
+import com.ladddd.myandroidarch.ui.view.HomeBottomSheet;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.utils.DimenUtils;
 
@@ -31,9 +32,10 @@ public class BarActivity extends BaseActivity {
 
     private boolean isTransparent = false;
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.toolbar) TintToolbar mToolbar;
     @BindView(R.id.tablayout) TabLayout tablayout;
     @BindView(R.id.viewpager) ViewPager viewpager;
+//    @BindView(R.id.home_bottom_sheet) HomeBottomSheet mHomeBottomSheet;
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, BarActivity.class);
@@ -57,8 +59,10 @@ public class BarActivity extends BaseActivity {
         );
 
         mDrawerLayout.addDrawerListener(mDrawerToggle);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         mDrawerToggle.syncState();
 
         //transparent status

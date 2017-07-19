@@ -18,8 +18,8 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/colorPrimary"
-            app:statusBarScrim="@color/colorPrimaryDark"
+            app:contentScrim="@color/theme_color_primary"
+            app:statusBarScrim="@color/theme_color_primary"
             app:collapsedTitleGravity="center"
             app:expandedTitleMarginEnd="164dp"
             app:expandedTitleMarginStart="148dp"

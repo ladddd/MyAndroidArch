@@ -42,6 +42,11 @@ public class PicBrowserActivity extends BaseActivity {
     }
 
     @Override
+    public void applyTheme() {
+        //apply its own theme, not color status bar
+    }
+
+    @Override
     protected void initView() {
         setContentView(R.layout.activity_pic_browser);
         ButterKnife.bind(this);

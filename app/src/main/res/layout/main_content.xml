@@ -1,48 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<com.bilibili.magicasakura.widgets.TintRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg">
 
-    <LinearLayout android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:padding="15dp">
-        <Button
-            android:id="@+id/btn_ptr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Goto Ptr"/>
 
-        <Button
-            android:id="@+id/btn_h_ptr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Goto H Ptr"/>
+    <ScrollView android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Show Share Panel"/>
+        <LinearLayout android:orientation="vertical"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:padding="15dp">
+            <com.bilibili.magicasakura.widgets.TintButton
+                android:id="@+id/btn_ptr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_button"
+                android:background="@drawable/main_page_btn_bg"
+                android:padding="10dp"
+                android:text="Goto Ptr"/>
 
-        <Button
-            android:id="@+id/btn_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Goto bar"/>
+            <com.bilibili.magicasakura.widgets.TintButton
+                android:id="@+id/btn_h_ptr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_button"
+                android:background="@drawable/main_page_btn_bg"
+                android:padding="10dp"
+                android:text="Goto H Ptr"/>
 
-        <Button
-            android:id="@+id/btn_collapse_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Goto collapse bar"/>
+            <com.bilibili.magicasakura.widgets.TintButton
+                android:id="@+id/btn_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_button"
+                android:background="@drawable/main_page_btn_bg"
+                android:padding="10dp"
+                android:text="Show Share Panel"/>
 
-        <Button
-            android:id="@+id/btn_storage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Goto storage test"/>
+            <com.bilibili.magicasakura.widgets.TintButton
+                android:id="@+id/btn_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_button"
+                android:background="@drawable/main_page_btn_bg"
+                android:text="Goto bar"/>
 
-    </LinearLayout>
-</ScrollView>
+            <com.bilibili.magicasakura.widgets.TintButton
+                android:id="@+id/btn_collapse_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_button"
+                android:background="@drawable/main_page_btn_bg"
+                android:padding="10dp"
+                android:text="Goto collapse bar"/>
+
+            <com.bilibili.magicasakura.widgets.TintButton
+                android:id="@+id/btn_storage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_button"
+                android:background="@drawable/main_page_btn_bg"
+                android:padding="10dp"
+                android:text="Goto storage test"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <com.bilibili.magicasakura.widgets.TintTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_hint"
+                    android:text="night mode"/>
+
+                <com.bilibili.magicasakura.widgets.TintSwitchCompat
+                    android:id="@+id/sw_night_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:checked="false"
+                    app:thumbTint="@color/selector_switch_thumb"
+                    app:thumbTintMode="multiply"
+                    app:trackTint="@color/selector_switch_track"
+                    app:trackTintMode="src_in"/>
+
+                <ImageButton
+                    android:id="@+id/ib_change_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="@mipmap/ic_magicasakura"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</com.bilibili.magicasakura.widgets.TintRelativeLayout>

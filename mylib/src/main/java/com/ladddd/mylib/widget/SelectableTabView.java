@@ -9,6 +9,9 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bilibili.magicasakura.widgets.TintImageView;
+import com.bilibili.magicasakura.widgets.TintTextView;
 import com.ladddd.mylib.R;
 
 /**
@@ -29,13 +34,14 @@ public class SelectableTabView extends RelativeLayout {
     protected boolean selected = false;
     protected int unreadCount;
 
-    protected TextView tv_tab_text;
-    protected ImageView iv_tab_icon;
+    protected TintTextView tv_tab_text;
+    protected TintImageView iv_tab_icon;
     protected TextView tv_unread;
     protected ImageView iv_notice;
 
     protected int normalDrawableResId;
     protected int selectedDrawableResId;
+    protected Drawable selectedDrawable;
     protected int normalColor;
     protected int selectedColor;
     protected float normalTextSize;
@@ -49,14 +55,15 @@ public class SelectableTabView extends RelativeLayout {
 
     private void init(Context context, AttributeSet attrs) {
         View contentView = LayoutInflater.from(context).inflate(R.layout.selecteable_tab_view, this);
-        tv_tab_text = (TextView) contentView.findViewById(R.id.tv_tab_text);
-        iv_tab_icon = (ImageView) contentView.findViewById(R.id.iv_tab_icon);
+        tv_tab_text = (TintTextView) contentView.findViewById(R.id.tv_tab_text);
+        iv_tab_icon = (TintImageView) contentView.findViewById(R.id.iv_tab_icon);
         tv_unread = (TextView) contentView.findViewById(R.id.tv_unread);
         iv_notice = (ImageView) contentView.findViewById(R.id.iv_notice);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SelectableTabView);
         normalDrawableResId = typedArray.getResourceId(R.styleable.SelectableTabView_drawableNormal, R.drawable.loading); //test loading res id
         selectedDrawableResId = typedArray.getResourceId(R.styleable.SelectableTabView_drawableSelected, R.drawable.loading);
+        selectedDrawable = context.getResources().getDrawable(selectedDrawableResId);
         normalColor = typedArray.getColor(R.styleable.SelectableTabView_colorNormal, Color.GRAY);
         selectedColor = typedArray.getColor(R.styleable.SelectableTabView_colorSelected, Color.BLACK);
         normalTextSize = typedArray.getDimension(R.styleable.SelectableTabView_textSizeNormal, 12);
@@ -88,7 +95,7 @@ public class SelectableTabView extends RelativeLayout {
             return;
         }
         selected = true;
-        iv_tab_icon.setImageResource(selectedDrawableResId);
+        iv_tab_icon.setImageDrawable(selectedDrawable);
         ObjectAnimator sizeAnimator = ObjectAnimator.ofFloat(tv_tab_text, "textSize", normalTextSize, selectedTextSize);
 //        ObjectAnimator colorAnimator = ObjectAnimator.ofArgb(tv_tab_text, "textColor", normalColor, selectedColor);
         ValueAnimator colorAnimator = ValueAnimator
@@ -149,6 +156,21 @@ public class SelectableTabView extends RelativeLayout {
         } else {
             tv_unread.setVisibility(VISIBLE);
             tv_unread.setText(unreadCount>=100?"99+":String.valueOf(unreadCount));
+        }
+    }
+
+    public void tint(@ColorInt int colorValue) {
+        if (iv_tab_icon != null) {
+            DrawableCompat.setTint(selectedDrawable, colorValue);
+            if (selected) {
+                iv_tab_icon.setImageDrawable(selectedDrawable);
+            }
+        }
+        if (tv_tab_text != null) {
+            selectedColor = colorValue;
+            if (selected) {
+                tv_tab_text.setTextColor(selectedColor);
+            }
         }
     }
 }

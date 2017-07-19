@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="sharedpreference"/>
+        android:text="sharedpreference(key: test)"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,6 +33,7 @@
             android:text="save"/>
 
         <Button
+            android:id="@+id/btn_load_sp"
             android:layout_width="60dp"
             android:layout_height="40dp"
             android:layout_marginEnd="4dp"
@@ -41,4 +42,99 @@
             android:text="Load"/>
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="file cache(key: test)"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_cache"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            />
+
+        <Button
+            android:id="@+id/btn_save_cache"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:text="save"/>
+
+        <Button
+            android:id="@+id/btn_load_cache"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/btn_save_cache"
+            android:text="Load"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="database(key: test)"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_db"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            />
+
+        <Button
+            android:id="@+id/btn_save_db"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:text="save"/>
+
+        <Button
+            android:id="@+id/btn_load_db"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/btn_save_db"
+            android:text="Load"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:text="value:"/>
+
+    <TextView
+        android:id="@+id/tv_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"/>
 </LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="theme_color_primary">#2d2d2d</color>
+    <color name="theme_color_primary_dark">#242424</color>
+    <color name="theme_color_primary_trans">#992d2d2d</color>
+    <color name="theme_color_secondary">#057748</color>
+
+    <color name="main_bg">#444444</color>
+    <color name="text_button">#666666</color>
+    <color name="text_hint">#ffffff</color>
+</resources>

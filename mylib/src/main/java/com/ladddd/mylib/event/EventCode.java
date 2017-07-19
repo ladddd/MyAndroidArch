@@ -6,4 +6,5 @@ package com.ladddd.mylib.event;
 
 public interface EventCode {
     int NET_STATE_CHANGED = 0xa001;
+    int THEME_CHANGED = 0xa002;
 }

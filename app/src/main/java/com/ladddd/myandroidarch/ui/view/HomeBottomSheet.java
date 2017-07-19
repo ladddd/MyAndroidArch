@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.bilibili.magicasakura.utils.ThemeUtils;
+import com.bilibili.magicasakura.widgets.Tintable;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.mylib.widget.SelectableTabView;
 
@@ -17,7 +19,7 @@ import java.util.List;
  *
  */
 
-public class HomeBottomSheet extends CardView {
+public class HomeBottomSheet extends CardView implements Tintable {
 
     private List<SelectableTabView> tabArray = new ArrayList<>();
 
@@ -51,6 +53,7 @@ public class HomeBottomSheet extends CardView {
                     setTabSelected(finalI);
                 }
             });
+            tabArray.get(i).tint(ThemeUtils.getColorById(context, R.color.theme_color_primary_dark));
         }
     }
 
@@ -61,6 +64,13 @@ public class HomeBottomSheet extends CardView {
             } else {
                 tabArray.get(i).setTabSelected();
             }
+        }
+    }
+
+    @Override
+    public void tint() {
+        for (int i = 0; i < tabArray.size(); i++) {
+            tabArray.get(i).tint(ThemeUtils.getColorById(getContext(), R.color.theme_color_primary_dark));
         }
     }
 }

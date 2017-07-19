@@ -2,7 +2,6 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rl_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     app:cardElevation="8dp">
@@ -21,7 +20,7 @@
             app:drawableNormal="@drawable/ic_looks_one_black_24dp"
             app:drawableSelected="@drawable/ic_looks_one_blue_24dp"
             app:colorNormal="#666666"
-            app:colorSelected="@color/colorPrimary"
+            app:colorSelected="@color/theme_color_primary"
             app:initialSelected="true"
             app:tabText="首页"/>
 
@@ -33,7 +32,7 @@
             app:drawableNormal="@drawable/ic_looks_two_black_24dp"
             app:drawableSelected="@drawable/ic_looks_two_blue_24dp"
             app:colorNormal="#666666"
-            app:colorSelected="@color/colorPrimary"
+            app:colorSelected="@color/theme_color_primary"
             app:tabText="关注"/>
 
         <com.ladddd.mylib.widget.SelectableTabView
@@ -44,7 +43,7 @@
             app:drawableNormal="@drawable/ic_looks_3_black_24dp"
             app:drawableSelected="@drawable/ic_looks_3_blue_24dp"
             app:colorNormal="#666666"
-            app:colorSelected="@color/colorPrimary"
+            app:colorSelected="@color/theme_color_primary"
             app:tabText="LIVE"/>
 
         <com.ladddd.mylib.widget.SelectableTabView
@@ -55,7 +54,7 @@
             app:drawableNormal="@drawable/ic_looks_4_black_24dp"
             app:drawableSelected="@drawable/ic_looks_4_blue_24dp"
             app:colorNormal="#666666"
-            app:colorSelected="@color/colorPrimary"
+            app:colorSelected="@color/theme_color_primary"
             app:tabText="我的"/>
 
     </RadioGroup>

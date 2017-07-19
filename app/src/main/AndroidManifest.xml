@@ -37,6 +37,10 @@
 
         <activity android:name=".ui.activity.PicBrowserActivity"
             android:theme="@style/PicBrowserTheme"/>
+
+        <activity android:name=".ui.activity.StorageTestActivity"/>
+
+        <activity android:name=".ui.activity.ThemeActivity"/>
     </application>
 
 </manifest>
