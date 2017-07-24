@@ -1,5 +1,6 @@
 package com.ladddd.myandroidarch.ui.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.arch.lifecycle.ViewModelProviders;
@@ -14,9 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 
 import com.bilibili.magicasakura.utils.ThemeUtils;
-import com.bilibili.magicasakura.widgets.TintSwitchCompat;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.model.ShareAppInfo;
@@ -25,15 +26,20 @@ import com.ladddd.myandroidarch.viewmodel.MainViewModel;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.config.AppConfig;
 import com.ladddd.mylib.slidinguppanellayout.SlidingUpPanelLayout;
+import com.ladddd.mylib.utils.CrashUtils;
 import com.ladddd.mylib.utils.DimenUtils;
 import com.ladddd.mylib.utils.SPUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
 
@@ -48,7 +54,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.btn_share) Button btnShowShare;
     @BindView(R.id.sliding_layout) SlidingUpPanelLayout mSlidingUpPanelLayout;
     @BindView(R.id.recycler_share) RecyclerView recyclerShare;
-    @BindView(R.id.sw_night_mode) TintSwitchCompat tintSwitch;
+    @BindView(R.id.sw_night_mode)
+    Switch tintSwitch;
 
     @OnClick(R.id.btn_ptr) void goToPtr() {
         PtrActivity.open(this);
@@ -92,6 +99,15 @@ public class MainActivity extends BaseActivity {
         ThemeActivity.launch(this);
     }
 
+    @OnClick(R.id.btn_crash) void throwException() {
+        Intent intent = new Intent(this, ErrorActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_search) void goToSearch() {
+        SearchActivity.launch(this);
+    }
+
     @OnCheckedChanged(R.id.sw_night_mode) void switchNightMode(boolean checked) {
         //change theme
         toggleNightMode(checked);
@@ -130,6 +146,26 @@ public class MainActivity extends BaseActivity {
         });
 
         tintSwitch.setChecked(SPUtils.getInstance("multiple_theme").getBoolean("is_night_mode", false));
+
+        //request permission, generate crash log directory
+        Observable.timer(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Long>bindToLifecycle())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        new RxPermissions(MainActivity.this)
+                                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                .subscribe(new Consumer<Boolean>() {
+                                    @Override
+                                    public void accept(Boolean aBoolean) throws Exception {
+                                        if (aBoolean) {
+                                            CrashUtils.init();
+                                        }
+                                    }
+                                });
+                    }
+                });
     }
 
     @Override

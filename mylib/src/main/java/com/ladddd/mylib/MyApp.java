@@ -8,6 +8,7 @@ import com.ladddd.mylib.event.BaseEvent;
 import com.ladddd.mylib.event.EventCode;
 import com.ladddd.mylib.rx.Connectivity;
 import com.ladddd.mylib.rx.network.RxNetwork;
+import com.ladddd.mylib.utils.CrashUtils;
 
 import org.greenrobot.eventbus.EventBus;
 

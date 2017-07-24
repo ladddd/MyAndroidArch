@@ -85,4 +85,7 @@ dependencies {
 
     //theme change
     compile 'com.bilibili:magicasakura:0.1.6@aar'
+
+    //search bar
+    compile 'com.github.arimorty:floatingsearchview:2.1.1'
 }

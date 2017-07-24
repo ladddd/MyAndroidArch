@@ -15,14 +15,29 @@
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:padding="15dp">
-            <com.bilibili.magicasakura.widgets.TintButton
-                android:id="@+id/btn_ptr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_button"
-                android:background="@drawable/main_page_btn_bg"
-                android:padding="10dp"
-                android:text="Goto Ptr"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.bilibili.magicasakura.widgets.TintButton
+                    android:id="@+id/btn_ptr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_button"
+                    android:background="@drawable/main_page_btn_bg"
+                    android:padding="10dp"
+                    android:text="Goto Ptr"/>
+
+                <Button
+                    android:id="@+id/btn_crash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/red_btn_bg"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="serif-monospace"
+                    android:text="crash"/>
+            </RelativeLayout>
 
             <com.bilibili.magicasakura.widgets.TintButton
                 android:id="@+id/btn_h_ptr"
@@ -81,16 +96,26 @@
                     android:textColor="@color/text_hint"
                     android:text="night mode"/>
 
-                <com.bilibili.magicasakura.widgets.TintSwitchCompat
+                <!--TintSwitchCompat running unit test case will throw XML Inflating exception-->
+                <!--<com.bilibili.magicasakura.widgets.TintSwitchCompat-->
+                    <!--android:id="@+id/sw_night_mode"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:checked="false"-->
+                    <!--app:thumbTint="@color/selector_switch_thumb"-->
+                    <!--app:thumbTintMode="multiply"-->
+                    <!--app:trackTint="@color/selector_switch_track"-->
+                    <!--app:trackTintMode="src_in"-->
+                    <!--/>-->
+
+                <Switch
                     android:id="@+id/sw_night_mode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:checked="false"
-                    app:thumbTint="@color/selector_switch_thumb"
-                    app:thumbTintMode="multiply"
-                    app:trackTint="@color/selector_switch_track"
-                    app:trackTintMode="src_in"/>
+                    />
 
                 <ImageButton
                     android:id="@+id/ib_change_theme"
@@ -99,6 +124,15 @@
                     android:layout_alignParentEnd="true"
                     android:src="@mipmap/ic_magicasakura"/>
             </RelativeLayout>
+
+            <com.bilibili.magicasakura.widgets.TintButton
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_button"
+                android:background="@drawable/main_page_btn_bg"
+                android:padding="10dp"
+                android:text="Goto Search"/>
 
         </LinearLayout>
     </ScrollView>

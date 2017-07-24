@@ -41,6 +41,8 @@
         <activity android:name=".ui.activity.StorageTestActivity"/>
 
         <activity android:name=".ui.activity.ThemeActivity"/>
+
+        <activity android:name=".ui.activity.SearchActivity"/>
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +14,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.bilibili.magicasakura.utils.ThemeUtils;
 import com.bumptech.glide.Glide;
 import com.ladddd.myandroidarch.R;
 import com.ladddd.myandroidarch.ui.adapter.TestAdapter;
+import com.ladddd.myandroidarch.utils.ThemeHelper;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.config.AppConfig;
 
@@ -43,6 +46,8 @@ public class CollapseBarActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.iv_header)
     ImageView iv_header;
+    @BindView(R.id.collapsing_tool_bar)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     TestAdapter adapter;
 
@@ -75,6 +80,8 @@ public class CollapseBarActivity extends BaseActivity {
                 .error(R.drawable.default_image)
                 .into(iv_header);
 
+        mCollapsingToolbarLayout.setStatusBarScrimColor(ThemeUtils.getColorById(CollapseBarActivity.this, R.color.theme_color_primary_dark));
+        mCollapsingToolbarLayout.setContentScrimColor(ThemeUtils.getColorById(CollapseBarActivity.this, R.color.theme_color_primary));
     }
 
     @Override

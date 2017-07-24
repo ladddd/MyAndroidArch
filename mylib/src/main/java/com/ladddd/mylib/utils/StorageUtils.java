@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
@@ -27,21 +28,15 @@ import io.reactivex.functions.Consumer;
 public class StorageUtils {
 
     private static final String EXTERNAL_DIR_NAME = "nimahai";
-
-    private static StorageUtils instance = null;
-
-    public static StorageUtils getInstance() {
-        if (instance == null) {
-            instance = new StorageUtils();
-        }
-        return instance;
-    }
+    private static final String ROOT_DIR_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
+            File.separator + "nimahai" + File.separator;
 
     private StorageUtils() {
 
     }
 
-    private File getAlbumStorageDir(String albumName) {
+    //will lose after app uninstalled
+    private static File getAlbumStorageDir(String albumName) {
         // Get the directory for the app's private pictures directory.
         File file = new File(AppConfig.getContext().getExternalFilesDir(
                 Environment.DIRECTORY_PICTURES), albumName);
@@ -53,7 +48,7 @@ public class StorageUtils {
         return file;
     }
 
-    private File getAlbumPublicStorageDir(String albumName) {
+    private static File getAlbumPublicStorageDir(String albumName) {
         File pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File file = new File(pictureFolder, albumName);
 //        File file = new File(pictureFolder.getAbsoluteFile() + File.separator + albumName);
@@ -66,7 +61,7 @@ public class StorageUtils {
         return file;
     }
 
-    public void dowloadImageToLocal(Activity activity, final String imageUrl) {
+    public static void dowloadImageToLocal(Activity activity, final String imageUrl) {
         //need to check permissions dynamically, or we cant create directory under Pictures above 6.0
         new RxPermissions(activity)
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -112,6 +107,26 @@ public class StorageUtils {
                                 });
                     }
                 });
+    }
+
+    private static boolean createRootDirIfNotExist() {
+        File file = new File(ROOT_DIR_PATH);
+        return file.exists() || file.mkdir();
+    }
+
+    @Nullable
+    public static File getCrashLogDir() {
+        if (!createRootDirIfNotExist()) {
+            return null;
+        }
+        File file = new File(ROOT_DIR_PATH, "logs");
+        if (!file.exists()) {
+            if (!file.mkdir()) {
+                //TODO
+                Log.e("storage", "directory not generated");
+            }
+        }
+        return file;
     }
 
 }

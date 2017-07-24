@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <com.bilibili.magicasakura.widgets.TintEditText
             android:id="@+id/et_sp"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <com.bilibili.magicasakura.widgets.TintEditText
             android:id="@+id/et_cache"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <com.bilibili.magicasakura.widgets.TintEditText
             android:id="@+id/et_db"
             android:layout_width="200dp"
             android:layout_height="wrap_content"

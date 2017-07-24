@@ -81,7 +81,7 @@ public class PicBrowserActivity extends BaseActivity {
         tv_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StorageUtils.getInstance().dowloadImageToLocal(PicBrowserActivity.this,
+                StorageUtils.dowloadImageToLocal(PicBrowserActivity.this,
                         imageList.get(vp_pics.getCurrentItem()));
             }
         });
