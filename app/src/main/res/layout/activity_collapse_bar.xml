@@ -50,7 +50,16 @@
                 android:layout_height="wrap_content"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:title="@string/app_name"/>
+                app:title="@string/app_name">
+
+                <ImageButton
+                    android:id="@+id/ib_change_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_gravity="end"
+                    android:src="@mipmap/ic_magicasakura"/>
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

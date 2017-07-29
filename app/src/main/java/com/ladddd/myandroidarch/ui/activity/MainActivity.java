@@ -234,4 +234,8 @@ public class MainActivity extends BaseActivity {
 //                AppCompatDelegate.MODE_NIGHT_YES
 //                :AppCompatDelegate.MODE_NIGHT_NO);
     }
+
+    protected void afterThemeChanged() {
+        tintSwitch.setChecked(SPUtils.getInstance("multiple_theme").getBoolean("is_night_mode", false));
+    }
 }

@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bilibili.magicasakura.utils.ThemeUtils;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -48,6 +50,9 @@ public class CollapseBarActivity extends BaseActivity {
     ImageView iv_header;
     @BindView(R.id.collapsing_tool_bar)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @OnClick(R.id.ib_change_theme) void goToChangeTheme() {
+        ThemeActivity.launch(this);
+    }
 
     TestAdapter adapter;
 
@@ -110,5 +115,9 @@ public class CollapseBarActivity extends BaseActivity {
                 adapter.setNewData(integers);
             }
         });
+    }
+
+    protected void initSubscription() {
+
     }
 }

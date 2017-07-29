@@ -60,7 +60,7 @@ dependencies {
     compile 'io.objectbox:objectbox-android:0.9.12'
 
     //eventbus
-    compile 'org.greenrobot:eventbus:3.0.0'
+//    compile 'org.greenrobot:eventbus:3.0.0'
 
     //recyclerview
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.15'

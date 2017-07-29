@@ -51,14 +51,25 @@
 
         </android.support.design.widget.CoordinatorLayout>
         <!-- The navigation drawer -->
-        <ListView android:id="@+id/left_drawer"
-                  android:layout_width="240dp"
-                  android:layout_height="match_parent"
-                  android:layout_gravity="start"
-                  android:choiceMode="singleChoice"
-                  android:divider="@android:color/transparent"
-                  android:dividerHeight="0dp"
-                  android:background="@color/theme_color_primary"/>
+        <com.bilibili.magicasakura.widgets.TintRelativeLayout
+            android:id="@+id/left_drawer"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:choiceMode="singleChoice"
+            android:background="@color/theme_color_primary">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_drawer"
+                android:layout_width="240dp"
+                android:layout_height="match_parent"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp"
+                />
+
+        </com.bilibili.magicasakura.widgets.TintRelativeLayout>
+
+
     </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

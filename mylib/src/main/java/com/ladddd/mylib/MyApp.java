@@ -4,13 +4,8 @@ import android.app.Application;
 import android.net.NetworkInfo;
 
 import com.ladddd.mylib.config.AppConfig;
-import com.ladddd.mylib.event.BaseEvent;
-import com.ladddd.mylib.event.EventCode;
 import com.ladddd.mylib.rx.Connectivity;
 import com.ladddd.mylib.rx.network.RxNetwork;
-import com.ladddd.mylib.utils.CrashUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -58,7 +53,5 @@ public class MyApp extends Application {
 
     private void notifyNetworkLinkState(boolean connected) {
         isNetworkLinked = connected;
-//        BaseEvent<Boolean> event = new BaseEvent<>(EventCode.NET_STATE_CHANGED, connected);
-//        EventBus.getDefault().post(event);
     }
 }

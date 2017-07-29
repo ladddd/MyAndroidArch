@@ -19,12 +19,8 @@ import com.ladddd.myandroidarch.ui.adapter.ThemeAdapter;
 import com.ladddd.myandroidarch.utils.ThemeHelper;
 import com.ladddd.mylib.BaseActivity;
 import com.ladddd.mylib.config.AppConfig;
-import com.ladddd.mylib.event.BaseEvent;
-import com.ladddd.mylib.event.EventCode;
+import com.ladddd.mylib.rx.enventobserve.LivingThemeUtils;
 import com.ladddd.mylib.utils.SPUtils;
-import com.ladddd.mylib.utils.ToastUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
 
@@ -77,7 +73,7 @@ public class ThemeActivity extends BaseActivity {
                     SPUtils.getInstance("multiple_theme").put("is_night_mode", false);
                     AppConfig.resetNightMode();
                 }
-                ThemeUtils.refreshUI(ThemeActivity.this, new ThemeUtils.ExtraRefreshable() {
+                LivingThemeUtils.refreshUiPositive(ThemeActivity.this, new ThemeUtils.ExtraRefreshable() {
                             @Override
                             public void refreshGlobal(Activity activity) {
                                 //for global setting, just do once
@@ -99,7 +95,7 @@ public class ThemeActivity extends BaseActivity {
                         }
                 );
                 adapter.notifyDataSetChanged();
-                notifyThemeChanged();
+//                notifyThemeChanged();
             }
         });
     }
@@ -115,10 +111,5 @@ public class ThemeActivity extends BaseActivity {
     @Override
     protected void initData() {
 
-    }
-
-    private void notifyThemeChanged() {
-        BaseEvent<Object> event = new BaseEvent<>(EventCode.THEME_CHANGED, null);
-        EventBus.getDefault().post(event);
     }
 }
