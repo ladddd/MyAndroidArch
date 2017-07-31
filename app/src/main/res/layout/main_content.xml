@@ -125,14 +125,14 @@
                     android:src="@mipmap/ic_magicasakura"/>
             </RelativeLayout>
 
-            <com.bilibili.magicasakura.widgets.TintButton
-                android:id="@+id/btn_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_button"
-                android:background="@drawable/main_page_btn_bg"
-                android:padding="10dp"
-                android:text="Goto Search"/>
+            <!--<com.bilibili.magicasakura.widgets.TintButton-->
+                <!--android:id="@+id/btn_search"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textColor="@color/text_button"-->
+                <!--android:background="@drawable/main_page_btn_bg"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="Goto Search"/>-->
 
         </LinearLayout>
     </ScrollView>

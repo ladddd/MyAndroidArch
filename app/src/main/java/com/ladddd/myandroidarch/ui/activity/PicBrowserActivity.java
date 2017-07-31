@@ -42,7 +42,7 @@ public class PicBrowserActivity extends BaseActivity {
     }
 
     @Override
-    public void applyTheme() {
+    public void colorSystemBars() {
         //apply its own theme, not color status bar
     }
 

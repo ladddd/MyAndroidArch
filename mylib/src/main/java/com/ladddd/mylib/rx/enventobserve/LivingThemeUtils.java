@@ -5,6 +5,7 @@ import android.content.Context;
 import com.bilibili.magicasakura.utils.ThemeUtils;
 
 import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 
 /**
@@ -13,11 +14,11 @@ import io.reactivex.subjects.PublishSubject;
 
 public class LivingThemeUtils {
 
-    private static PublishSubject<Boolean> mSubject;
+    private static BehaviorSubject<Boolean> mSubject;
 
-    public static Observable<Boolean> getObservable() {
+    public static BehaviorSubject<Boolean> getObservable() {
         if (mSubject == null) {
-            mSubject = PublishSubject.create();
+            mSubject = BehaviorSubject.createDefault(true);
         }
         return mSubject;
     }
@@ -25,7 +26,7 @@ public class LivingThemeUtils {
     public static void refreshUiPositive(Context context, ThemeUtils.ExtraRefreshable refreshable) {
         ThemeUtils.refreshUI(context, refreshable);
         if (mSubject != null) {
-            mSubject.onNext(true);
+            mSubject.onNext(false);
         }
     }
 

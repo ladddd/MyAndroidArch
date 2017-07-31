@@ -104,10 +104,6 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    @OnClick(R.id.btn_search) void goToSearch() {
-        SearchActivity.launch(this);
-    }
-
     @OnCheckedChanged(R.id.sw_night_mode) void switchNightMode(boolean checked) {
         //change theme
         toggleNightMode(checked);

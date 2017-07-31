@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -28,20 +29,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
         @Override
         public void refreshSpecificView(View view) {
-            //TODO: will do this for each traversal
-            if (Build.VERSION.SDK_INT >= 21) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-                int colorResId = getResources().getIdentifier("theme_color_primary_dark", "color", getPackageName());
-                int colorValue = ThemeUtils.getColorById(BaseActivity.this, colorResId);
-                getWindow().setStatusBarColor(colorValue);
-
-                ActivityManager.TaskDescription taskDescription =
-                        new ActivityManager.TaskDescription(null, null,
-                                ThemeUtils.getThemeAttrColor(BaseActivity.this, android.R.attr.colorPrimary));
-                setTaskDescription(taskDescription);
-            }
+            //will do this for each traversal
+            colorSystemBars();
         }
     };
 
@@ -50,15 +39,25 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         super.onCreate(savedInstanceState);
 
         handleSavedInstanceState(savedInstanceState);
-        applyTheme();
         initView();
         initData();
         initSubscription();
     }
 
-    public void applyTheme() {
-        LivingThemeUtils.refreshUiNegative(BaseActivity.this, mRefreshable);
-        //subscribe an observable in the theme singleton,
+    public void colorSystemBars() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+            int colorResId = getResources().getIdentifier("theme_color_primary_dark", "color", getPackageName());
+            int colorValue = ThemeUtils.getColorById(BaseActivity.this, colorResId);
+            getWindow().setStatusBarColor(colorValue);
+
+            ActivityManager.TaskDescription taskDescription =
+                    new ActivityManager.TaskDescription(null, null,
+                            ThemeUtils.getThemeAttrColor(BaseActivity.this, android.R.attr.colorPrimary));
+            setTaskDescription(taskDescription);
+        }
     }
 
     protected abstract void initView();
@@ -70,11 +69,24 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                 .compose(this.<Boolean>bindToLifecycle())
                 .subscribe(new Consumer<Boolean>() {
             @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                LivingThemeUtils.refreshUiNegative(BaseActivity.this, mRefreshable);
+            public void accept(Boolean initialize) throws Exception {
+                if (initialize) {
+                    colorSystemBars();
+                } else {
+                    LivingThemeUtils.refreshUiNegative(BaseActivity.this, mRefreshable);
+                }
                 afterThemeChanged();
             }
         });
+
+        ((MyApp)getApplicationContext()).getNetStateSubject()
+                .compose(this.<Boolean>bindToLifecycle())
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        handleNetworkChanged(aBoolean);
+                    }
+                });
     }
 
     protected void afterThemeChanged() {
@@ -83,6 +95,10 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     protected void handleSavedInstanceState(Bundle savedInstanceState) {
 
+    }
+
+    protected void handleNetworkChanged(boolean connected) {
+        Log.d(getClass().getName(), connected?"Network Connected":"No Available Network");
     }
 
     @Override
@@ -110,5 +126,4 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         super.onDestroy();
 
     }
-
 }

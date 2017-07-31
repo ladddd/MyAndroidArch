@@ -90,7 +90,7 @@ public class BarActivity extends BaseActivity {
 
             @Override
             public CharSequence getPageTitle(int position) {
-                return "频道" + String.valueOf(position+1);
+                return "Channel" + String.valueOf(position+1);
             }
         });
 
