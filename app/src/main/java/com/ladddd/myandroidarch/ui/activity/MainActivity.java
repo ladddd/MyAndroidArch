@@ -41,6 +41,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 
 public class MainActivity extends BaseActivity {
@@ -71,11 +72,25 @@ public class MainActivity extends BaseActivity {
         }
         mViewModel.getShareAppInfos().subscribe(new Consumer<List<ShareAppInfo>>() {
             @Override
-            public void accept(List<ShareAppInfo> shareAppInfos) throws Exception {
-                adapter.setNewData(shareAppInfos);
+            public void accept(final List<ShareAppInfo> shareAppInfos) throws Exception {
+//                adapter.setNewData(shareAppInfos); insert data this place will block ui thread
                 if (SlidingUpPanelLayout.PanelState.ANCHORED != mSlidingUpPanelLayout.getPanelState()) {
                     mSlidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-                    recyclerShare.scrollToPosition(0);
+                    mSlidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                        @Override
+                        public void onPanelSlide(View panel, float slideOffset) {
+
+                        }
+
+                        @Override
+                        public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                            if (SlidingUpPanelLayout.PanelState.ANCHORED.equals(newState)) {
+                                adapter.setNewData(shareAppInfos);
+                                recyclerShare.scrollToPosition(0);
+                                mSlidingUpPanelLayout.removePanelSlideListener(this);
+                            }
+                        }
+                    });
                 } else {
                     mSlidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 }
@@ -147,19 +162,18 @@ public class MainActivity extends BaseActivity {
         Observable.timer(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Long>bindToLifecycle())
-                .subscribe(new Consumer<Long>() {
+                .flatMap(new Function<Long, Observable<Boolean>>() {
                     @Override
-                    public void accept(Long aLong) throws Exception {
-                        new RxPermissions(MainActivity.this)
-                                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                .subscribe(new Consumer<Boolean>() {
-                                    @Override
-                                    public void accept(Boolean aBoolean) throws Exception {
-                                        if (aBoolean) {
-                                            CrashUtils.init();
-                                        }
-                                    }
-                                });
+                    public Observable<Boolean> apply(Long aLong) throws Exception {
+                        return new RxPermissions(MainActivity.this)
+                                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    }
+                }).subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            CrashUtils.init();
+                        }
                     }
                 });
     }
