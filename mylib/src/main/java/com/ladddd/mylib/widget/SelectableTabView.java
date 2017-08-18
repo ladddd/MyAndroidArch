@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -19,8 +18,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bilibili.magicasakura.widgets.TintImageView;
-import com.bilibili.magicasakura.widgets.TintTextView;
 import com.ladddd.mylib.R;
 
 /**
@@ -34,8 +31,8 @@ public class SelectableTabView extends RelativeLayout {
     protected boolean selected = false;
     protected int unreadCount;
 
-    protected TintTextView tv_tab_text;
-    protected TintImageView iv_tab_icon;
+    protected TextView tv_tab_text;
+    protected ImageView iv_tab_icon;
     protected TextView tv_unread;
     protected ImageView iv_notice;
 
@@ -55,8 +52,8 @@ public class SelectableTabView extends RelativeLayout {
 
     private void init(Context context, AttributeSet attrs) {
         View contentView = LayoutInflater.from(context).inflate(R.layout.selecteable_tab_view, this);
-        tv_tab_text = (TintTextView) contentView.findViewById(R.id.tv_tab_text);
-        iv_tab_icon = (TintImageView) contentView.findViewById(R.id.iv_tab_icon);
+        tv_tab_text = (TextView) contentView.findViewById(R.id.tv_tab_text);
+        iv_tab_icon = (ImageView) contentView.findViewById(R.id.iv_tab_icon);
         tv_unread = (TextView) contentView.findViewById(R.id.tv_unread);
         iv_notice = (ImageView) contentView.findViewById(R.id.iv_notice);
 
