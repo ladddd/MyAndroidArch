@@ -5,4 +5,16 @@
 
     <string name="open">open</string>
     <string name="close">close</string>
+
+    <string name="bar_shortcut_short_label">Bar</string>
+    <string name="bar_shortcut_long_label">Colorful Bar</string>
+    <string name="bar_disabled_message">Bar disable now</string>
+
+    <string name="ptr_shortcut_short_label">Ptr</string>
+    <string name="ptr_shortcut_long_label">GankIO Ptr</string>
+    <string name="ptr_disabled_message">Ptr disable now</string>
+
+    <string name="hptr_shortcut_short_label">HPtr</string>
+    <string name="hptr_shortcut_long_label">Jiandan Ptr</string>
+    <string name="hptr_disabled_message">HPtr disable now</string>
 </resources>
